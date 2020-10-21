@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <aside id="colorlib-hero" class="breadcrumbs">
+        <div class="flexslider">
+            <ul class="slides">
+                <li style="background-image: url({% static 'images/img_bg_6.jpg' %});">
+                    <div class="overlay"></div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2 col-md-pull-2 slider-text">
+                                <div class="slider-text-inner">
+                                    <h1><strong>{{ clinic }}</strong></h1>
+                                    <h2>Общая информация</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    {% if clinic.image %}
+        <div><img src="{{ clinic.image.url }}"></div>
+    {% else %}
+        <div><img src="{% static 'images/default.jpg' %}"></div>
+    {% endif %}
+    <p>{{ clinic.information }}</p>
+    <h4>{{ clinic }} обеспечивает следующие медицинские отделения:</h4>
+    {% for department in clinic.medical_departments.all %}
+        <ul>
+            <li>{{ department }}</li>
+        </ul>
+    {% endfor %}
+    <p>Связаться с нами: {{ clinic.contact }}</p>
+    <p>Расположение: {{ clinic.address }}</p>
+{% endblock %}

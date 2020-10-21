@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <aside id="colorlib-hero" class="breadcrumbs">
+        <div class="flexslider">
+            <ul class="slides">
+                <li style="background-image: url({% static 'images/img_bg_6.jpg' %});">
+                    <div class="overlay"></div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2 col-md-pull-2 slider-text">
+                                <div class="slider-text-inner">
+                                    <h1>Все <strong>Клиники <small>- {{ clinics.count }}</small></strong></h1>
+                                    <h2>Здесь Вы найдете все медицинские клиники в городе Бишкек</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <ul>
+        {% for clinic in clinics %}
+            <li><a href="{% url 'clinic' clinic.id %}">{{ clinic }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
