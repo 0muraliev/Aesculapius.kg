@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'core/includes/messages.html' %}
+<h5>Персональные данные</h5>
+<ul>
+    <li>ФИО: {{ user.get_full_name }}</li>
+    <li>username: @{{ user.username }}</li>
+    <li>E-mail: {{ user.email }}</li>
+    {% if request.user.id == user.id %}
+    <li><a href="{% url 'password_change' %}">Сменить пароль</a></li>
+    {% endif %}
+</ul>
+<hr>
+{% endblock %}
