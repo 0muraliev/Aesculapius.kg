@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
 from .secret_settings import *
@@ -37,9 +36,9 @@ SITE_ID = 1
 
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 60
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 
 AUTHENTICATION_BACKENDS = [

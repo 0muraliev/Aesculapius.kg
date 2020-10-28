@@ -47,7 +47,7 @@
                                 <div class="col-md-2">
                                     <div class="loc">
                                         {% if request.user.is_authenticated %}
-                                        <p><a class="text-danger" href="{% url 'logout' %}">Выйти</a>
+                                        <p><a class="text-danger" href="{% url 'account_logout' %}">Выйти</a>
                                         <a href="{% url 'profile' request.user.id %}"><span class="icon"><i>
                                             <svg width="1em" height="1em" viewBox="0 0 16 16"
                                                  class="bi bi-person-fill" fill="currentColor"
@@ -56,7 +56,7 @@
                                             </svg></i></span>
                                         </a></p>
                                         {% else %}
-                                        <a href="{% url 'login' %}">Авторизоваться</a>
+                                        <a href="{% url 'account_login' %}">Авторизоваться</a>
                                         {% endif %}
                                     </div>
                                 </div>
