@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
+{% load bootstrap4 %}
 {% load i18n %}
+
 
 {% block content %}
 <h1 class="display-4 text-center user-select-none">Адрес электронной почты</h1>
+{% include 'core/includes/messages.html' %}
 {% if user.emailaddress_set.all %}
 <p>Следующие адреса электронной почты связаны с вашей учетной записью:</p>
 
@@ -27,12 +30,9 @@
         </div>
         {% endfor %}
 
-
         <button class="btn-info" type="submit" name="action_primary">Сделать основным</button>
-        <button class="btn-primary" type="submit" name="action_send">Отправить подтверждение</button>
+        <button class="btn-primary" type="submit" name="action_send">Отправить письмо с подтверждением</button>
         <button class="btn-danger" type="submit" name="action_remove">Удалить</button>
-
-
     </fieldset>
 </form>
 
@@ -45,31 +45,10 @@
 {% if can_add_email %}
 <br>
 <h2>Добавить адрес электронной почты</h2>
-<form method="post" action="{% url 'account_email' %}" class="add_email">
-    {% csrf_token %}
-    {{ form.as_p }}
+<form method="post" action="{% url 'account_email' %}" class="col-sm-3 my-3">{% csrf_token %}
+    {% bootstrap_form form %}
     <button name="action_add" class="btn btn-primary" type="submit">Добавить электронную почту</button>
 </form>
 <br>
 {% endif %}
-
-{% endblock %}
-
-
-{% block extra_body %}
-<script type="text/javascript">
-(function() {
-  var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
-  var actions = document.getElementsByName('action_remove');
-  if (actions.length) {
-    actions[0].addEventListener("click", function(e) {
-      if (! confirm(message)) {
-        e.preventDefault();
-      }
-    });
-  }
-})();
-
-
-</script>
 {% endblock %}
