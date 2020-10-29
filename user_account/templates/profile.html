@@ -2,12 +2,12 @@
 
 {% block content %}
 {% include 'core/includes/messages.html' %}
-<h1 class="text-center">Персональные данные</h1>
+<h1 class="text-center user-select-none">Персональные данные</h1>
 <ul>
     <li>ФИО: {{ user.get_full_name }}</li>
     <li>username: @{{ user.username }}</li>
-    <li>E-mail: {{ user.email }}</li>
     {% if request.user.id == user.id %}
+    <li>E-mail: {{ user.email }}</li>
     <li><a href="{% url 'account_email' %}">Управление электронной почтой</a></li>
     <li><a href="{% url 'account_reset_password' %}" class="text-danger">Сбросить пароль</a></li>
     {% endif %}
