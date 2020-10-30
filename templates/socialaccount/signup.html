@@ -1,22 +1,21 @@
-{% extends "socialaccount/base.html" %}
-
+{% extends "base.html" %}
+{% load bootstrap4 %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
-
 {% block content %}
-    <h1>{% trans "Sign Up" %}</h1>
+<h1 class="text-center select-user-none">Регистрация</h1>
 
-<p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to
-{{site_name}}. As a final step, please complete the following form:{% endblocktrans %}</p>
+<p>Вы собираетесь использовать свою учетную запись {{ account.get_provider.name }} для входа на
+{{ site.name }}. В качестве последнего шага, пожалуйста, заполните следующую форму:</p>
 
-<form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+<form class="col-sm-3 my-3 mx-auto p-3" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
   {% csrf_token %}
-  {{ form.as_p }}
+  {% bootstrap_form form %}
   {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
   {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+  <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
 </form>
+<br>
 
 {% endblock %}
