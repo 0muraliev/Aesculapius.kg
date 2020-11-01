@@ -3,10 +3,12 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = PhoneNumberField('Номер телефона', blank=True)
     itn = models.CharField('ИНН',
                            unique=True,
                            max_length=14,

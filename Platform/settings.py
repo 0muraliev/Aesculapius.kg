@@ -24,12 +24,17 @@ INSTALLED_APPS = [
     'core',
     'user_account',
 
+    'phonenumber_field',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.vk',
 ]
+
+PHONENUMBER_DB_FORMAT = 'NATIONAL'
+PHONENUMBER_DEFAULT_REGION = 'KG'
 
 LOGIN_REDIRECT_URL = '/'
 SITE_ID = 1

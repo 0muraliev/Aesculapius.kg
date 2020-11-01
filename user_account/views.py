@@ -17,12 +17,6 @@ def profile(request, id):
     if request.user.id != user.id:
         return redirect('profile', id=request.user.id)
 
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-
     context = {'user': user}
     return render(request, 'profile.html', context)
 
