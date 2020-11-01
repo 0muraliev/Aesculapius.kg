@@ -1,8 +1,9 @@
 from django import forms
+
 from .models import User, Profile
 
 
-class UserProfile(forms.ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
@@ -11,4 +12,8 @@ class UserProfile(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('itn', 'gender', 'birth_date', 'city', 'blood_type', 'photo')
+        fields = ('photo', 'itn', 'gender', 'birth_date', 'city', 'blood_type')
+        widgets = {
+            'birth_date': forms.SelectDateWidget(years=range(1940, 2021)),
+            'gender': forms.RadioSelect,
+        }

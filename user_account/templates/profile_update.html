@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+    <h1 class="text-center user-select-none">Персональные данные</h1>
+    {% include 'core/includes/messages.html' %}
+    <br>
+        <div class="row">
+            {% include 'includes/side_panel.html' %}
+            <div class="col-4">
+                <h3 class="text-muted">Настройки и доступ</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form user_form %}
+                    {% bootstrap_form profile_form %}
+                    <button class="btn btn-primary" type="submit">Сохранить изменения</button>
+                </form>
+            </div>
+        </div>
+    <hr>
+{% endblock %}

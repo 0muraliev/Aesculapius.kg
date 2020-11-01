@@ -1,0 +1,9 @@
+<div class="col-3">
+    <ul class="list-group">
+        <a class="list-group-item list-group-item-action list-group-item-success"
+           href="{% url 'profile' request.user.id %}">Профиль</a>
+        <a class="list-group-item list-group-item-action list-group-item-success" href="#">Контакт</a>
+        <a class="list-group-item list-group-item-action list-group-item-success" href="#">Сохраненное</a>
+        <a class="list-group-item list-group-item-action list-group-item-success" href="{% url 'profile_update' %}">Настройки</a>
+    </ul>
+</div>

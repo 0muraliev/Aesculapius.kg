@@ -44,17 +44,11 @@ class Profile(models.Model):
         return 'Profile for user {}'.format(self.user.username)
 
 
-"""
-Определение сигналов, чтобы модель Profile автоматически обновлялась при создании/изменении данных модели User.
-"""
-
-
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    """
+    Определение сигналов, чтобы модель Profile автоматически обновлялась при создании/изменении данных модели User.
+    """
     if created:
         Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
