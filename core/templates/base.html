@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Aesculapius.kg - Медицинский сервис для пациентов</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css"
+          integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/animate.css' %}">
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
@@ -16,7 +18,6 @@
     <link rel="stylesheet" href="{% static 'css/flexslider.css' %}">
     <link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
     <script src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
     <script src="{% static 'js/respond.min.js' %}"></script>
 
@@ -33,20 +34,30 @@
                     <div class="col-xs-12">
                         <div class="top">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <div id="colorlib-logo"><a href="{% url 'home' %}">Aesculapius<span>.kg</span></a>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="num">
                                         <span class="icon"><i class="icon-phone"></i></span>
                                         <p><a href="#">111-222-333</a><br><a href="#">99-222-333</a></p>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="loc">
-                                        <span class="icon"><i class="icon-location"></i></span>
-                                        <p><a href="#">88 Route West 21th Street, Suite 721 New York NY 10016</a></p>
+                                        {% if request.user.is_authenticated %}
+                                        <p><a class="text-danger" href="{% url 'account_logout' %}">Выйти</a>
+                                        <a href="{% url 'profile' request.user.id %}"><span class="icon"><i>
+                                            <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                                 class="bi bi-person-fill" fill="currentColor"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                            </svg></i></span>
+                                        </a></p>
+                                        {% else %}
+                                        <a href="{% url 'account_login' %}">Авторизоваться</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -86,8 +97,10 @@
             </div>
         </div>
     </nav>
-    {% block content %}
-    {% endblock %}
+    <div class="container-fluid">
+        {% block content %}
+        {% endblock %}
+    </div>
     <footer id="colorlib-footer" role="contentinfo">
         <div class="overlay"></div>
         <div class="container">
@@ -96,16 +109,16 @@
                     <h3>Head Office</h3>
                     <ul class="colorlib-footer-links">
                         <li>291 South 21th Street, <br> Suite 721 New York NY 10016</li>
-                        <li><a href="tel://1234567920"><i class="icon-phone"></i> + 1235 2355 98</a></li>
-                        <li><a href="mailto:info@yoursite.com"><i class="icon-mail"></i> info@yoursite.com</a></li>
-                        <li><a href="http://luxehotel.com"><i class="icon-location4"></i> yourwebsite.com</a></li>
+                        <li><a href="#"><i class="icon-phone"></i> + 1235 2355 98</a></li>
+                        <li><a href="#"><i class="icon-mail"></i> info@yoursite.com</a></li>
+                        <li><a href="#"><i class="icon-location4"></i> yourwebsite.com</a></li>
                         <li>Mon-Thu: 9:30 – 21:00</li>
                         <li>Fri: 6:00 – 21:00</li>
                         <li>Sat: 10:00 – 15:00</li>
                     </ul>
                 </div>
                 <div class="col-md-2 colorlib-widget">
-                    <h3>Departments</h3>
+                    <h3>Отделения</h3>
                     <p>
                     <ul class="colorlib-footer-links">
                         <li><a href="#">Neurology</a></li>
@@ -157,7 +170,7 @@
                             <input type="email" class="form-control" id="email" placeholder="Email">
                         </div>
                         <div class="form-group">
-                            <label for="message" class="sr-only">Message</label>
+                                <label for="message" class="sr-only">Message</label>
                             <textarea class="form-control" id="message" rows="3" placeholder="Message"></textarea>
                         </div>
                         <div class="form-group">
@@ -172,7 +185,8 @@
             <div class="col-md-12 text-center">
                 <p>
                     <small class="block">&copy;
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>.
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        .
                         All rights reserved.
                     </small>
                 </p>
@@ -197,5 +211,8 @@
 <script src="{% static 'js/magnific-popup-options.js' %}"></script>
 <script src="{% static 'js/sticky-kit.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"
+        integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD"
+        crossorigin="anonymous"></script>
 </body>
 </html>

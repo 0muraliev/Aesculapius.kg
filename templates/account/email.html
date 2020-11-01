@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+{% load i18n %}
+
+
+{% block content %}
+    <h1 class="text-center user-select-none">Персональные данные</h1>
+    {% include 'core/includes/messages.html' %}
+    <div class="row">
+        {% include 'includes/side_panel.html' %}
+        <div class="col-5">
+
+            {% if user.emailaddress_set.all %}
+                <p>Следующие адреса электронной почты связаны с вашей учетной записью:</p>
+
+                <form action="{% url 'account_email' %}" class="email_list" method="post">{% csrf_token %}
+                    <fieldset class="blockLabels">
+
+                        {% for emailaddress in user.emailaddress_set.all %}
+                            <div class="ctrlHolder">
+                                <label for="email_radio_{{ forloop.counter }}"
+                                       class="{% if emailaddress.primary %}primary_email{% endif %}">
+                                    <input id="email_radio_{{ forloop.counter }}" type="radio" name="email"
+                                           {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked" {% endif %}
+                                           value="{{ emailaddress.email }}"/>
+                                    {{ emailaddress.email }} [
+                                    {% if emailaddress.verified %}
+                                        <span class="text-success">проверенный</span>
+                                    {% else %}
+                                        <span class="text-warning">непроверенный</span>
+                                    {% endif %}
+                                    ]{% if emailaddress.primary %} - [<span class="text-secondary"> основной </span>
+                                    ]{% endif %}
+                                </label>
+                            </div>
+                        {% endfor %}
+
+                        <button class="btn-info" type="submit" name="action_primary">Сделать основным</button>
+                        <button class="btn-primary" type="submit" name="action_send">Отправить письмо с подтверждением
+                        </button>
+                        <button class="btn-danger" type="submit" name="action_remove">Удалить</button>
+                    </fieldset>
+                </form>
+
+            {% else %}
+                <p><strong>Предупреждение:</strong> В настоящее время у вас не настроен адрес электронной почты. Вам действительно стоит
+                    добавить адрес электронной почты, чтобы вы могли получать уведомления, сбрасывать пароль и т. Д..
+                </p>
+            {% endif %}
+
+            {% if can_add_email %}
+                <br>
+                <h3 class="text-muted">Добавить адрес электронной почты</h3>
+                <form method="post" action="{% url 'account_email' %}" class="col-md-8">{% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button name="action_add" class="btn btn-primary" type="submit">Добавить электронную почту</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+{% endblock %}

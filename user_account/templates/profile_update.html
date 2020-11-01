@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+    <h1 class="text-center user-select-none">Персональные данные</h1>
+    {% include 'core/includes/messages.html' %}
+    <br>
+        <div class="row">
+            {% include 'includes/side_panel.html' %}
+            <div class="col-4">
+                <h3 class="text-muted">Настройки и доступ</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="{% url 'socialaccount_connections' %}" class="text-primary">Подключения к социальным сетям</a></li>
+                    <li class="list-group-item"><a href="{% url 'account_change_password' %}" class="text-primary">Изменить пароль</a></li>
+                    <li class="list-group-item"><a href="{% url 'account_reset_password' %}" class="text-danger">Сбросить пароль</a></li>
+                </ul>
+            </div>
+            <div class="col-4">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form user_form %}
+                    {% bootstrap_form profile_form %}
+                    <button class="btn btn-primary" type="submit">Сохранить изменения</button>
+                </form>
+
+            </div>
+        </div>
+    <hr>
+{% endblock %}
