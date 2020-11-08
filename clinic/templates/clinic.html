@@ -1,6 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASlHwW6kgLT0NBbIsgDkE8JYBKrv5ghYI&callback=initMap&libraries=&v=weekly"
+            defer></script>
+    <style type="text/css">
+        #map {
+            height: 450px;
+            width: 1035px;
+        }
+    </style>
+    <script>
+        let map;
+        let arr = "{{ clinic.location }}".split(',').map(Number);
+        const bangalore = {lat: arr[0], lng: arr[1]};
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: bangalore,
+                zoom: 14,
+            });
+            new google.maps.Marker({
+                position: bangalore,
+                map,
+            });
+        }
+    </script>
+{% endblock %}
+
 {% block content %}
     <aside id="colorlib-hero" class="breadcrumbs">
         <div class="flexslider">
@@ -21,18 +48,27 @@
             </ul>
         </div>
     </aside>
-    {% if clinic.image %}
-        <div><img src="{{ clinic.image.url }}"></div>
-    {% else %}
-        <div><img src="{% static 'images/default.jpg' %}"></div>
-    {% endif %}
-    <p>{{ clinic.information }}</p>
-    <h4>{{ clinic }} обеспечивает следующие медицинские отделения:</h4>
-    {% for department in clinic.medical_departments.all %}
-        <ul>
-            <li>{{ department }}</li>
-        </ul>
-    {% endfor %}
-    <p>Связаться с нами: {{ clinic.contact }}</p>
-    <p>Расположение: {{ clinic.address }}</p>
+{% endblock %}
+{% block container %}
+    <div class="col p-4">
+
+        <div class="row">
+
+            {% if clinic.image %}
+                <div><img src="{{ clinic.image.url }}" class="img-fluid"></div>
+            {% else %}
+                <div><img src="{% static 'images/default.jpg' %}"></div>
+            {% endif %}
+            <p>{{ clinic.information }}</p>
+            <h3><span class="text-primary">{{ clinic }}</span> обеспечивает следующие медицинские отделения:</h3>
+            {% for department in clinic.medical_departments.all %}
+                <ul>
+                    <li>{{ department }}</li>
+                </ul>
+            {% endfor %}
+            <p><span class="text-primary">Связаться с нами: </span>{{ clinic.contact }}</p>
+            <p><span class="text-primary">Место расположения: </span>{{ clinic.address }}</p>
+            <div id='map'></div>
+        </div>
+    </div>
 {% endblock %}

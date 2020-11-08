@@ -1,4 +1,5 @@
 from django.db import models
+from location_field.models.plain import PlainLocationField
 
 
 class Clinic(models.Model):
@@ -9,7 +10,8 @@ class Clinic(models.Model):
                               upload_to='clinics',
                               null=True,
                               blank=True)
-    address = models.CharField('Адрес', max_length=125)
+    address = models.CharField('Адрес', max_length=255)
+    location = PlainLocationField(based_fields=['address'], zoom=7, suffix='Bishkek')
     contact = models.CharField('Связаться с нами', max_length=45)
 
     def __str__(self):
