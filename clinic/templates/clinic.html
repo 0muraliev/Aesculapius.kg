@@ -131,12 +131,14 @@
                     </figure>
                 {% endfor %}
                 <br>
-                <form method="POST">{% csrf_token %}
-                    <div class="form-check form-check-inline">
-                        {% bootstrap_form form %}
-                    </div>
-                    <button class="btn btn-primary" type="submit">Оставить отзыв</button>
-                </form>
+                {% if request.user.is_authenticated %}
+                    <form method="POST">{% csrf_token %}
+                        <div class="form-check form-check-inline">
+                            {% bootstrap_form form %}
+                        </div>
+                        <button class="btn btn-primary" type="submit">Оставить отзыв</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
         <!-- Tab content -->
