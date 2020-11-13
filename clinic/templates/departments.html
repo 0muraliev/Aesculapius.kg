@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<h3>Все медицинские отделения</h3>
+    <ul>
+        {% for dep in departments %}
+            <li>{{ dep }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

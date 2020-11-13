@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from .forms import ReviewForm
-from .models import Clinic, Review
+from .models import Clinic, Review, MedicalDepartment
 
 
 def clinics(request):
@@ -54,3 +54,8 @@ def clinic(request, id):
     context['reviews'] = Review.objects.filter(clinic__name=clinic)
     context['form'] = ReviewForm()
     return render(request, 'clinic.html', context)
+
+
+def departments(request):
+    context = {'departments': MedicalDepartment.objects.order_by('name')}
+    return render(request, 'departments.html', context)

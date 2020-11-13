@@ -66,15 +66,8 @@
                                         </ul>
                                     </li>
                                     <li><a href="{% url 'clinics' %}">Клиники</a></li>
-                                    <li class="has-dropdown">
-                                        <a href="departments.html">Отделения</a>
-                                        <ul class="dropdown">
-                                            <li><a href="departments-single.html">Plasetic Surgery Department</a></li>
-                                            <li><a href="departments-single.html">Dental Department</a></li>
-                                            <li><a href="departments-single.html">Psychological Department</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="blog.html">Блог</a></li>
+                                    <li><a href="{% url 'department' %}">Отделения</a></li>
+                                    <li><a href="#">Блог</a></li>
                                     <li><a href="contact.html">Связаться с нами</a></li>
                                 </ul>
                             </div>
