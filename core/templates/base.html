@@ -6,25 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Aesculapius.kg - Медицинский сервис для пациентов</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css"
-          integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static 'css/animate.css' %}">
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/flexslider.css' %}">
-    <link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block head %}
+    {% endblock %}
     <script src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
     <script src="{% static 'js/respond.min.js' %}"></script>
-
 </head>
 <body>
-
-<div class="colorlib-loader"></div>
 
 <div id="page">
     <nav class="colorlib-nav" role="navigation">
@@ -71,23 +68,16 @@
                         <div class="col-xs-8">
                             <div class="menu-1">
                                 <ul>
-                                    <li class="active"><a href="{% url 'home' %}">Главная</a></li>
+                                    <li><a href="{% url 'home' %}">Главная</a></li>
                                     <li class="has-dropdown">
                                         <a href="doctors.html">Доктора</a>
                                         <ul class="dropdown">
                                             <li><a href="doctors-single.html">Single Doctor</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="clinics.html">Клиники</a></li>
-                                    <li class="has-dropdown">
-                                        <a href="departments.html">Отделения</a>
-                                        <ul class="dropdown">
-                                            <li><a href="departments-single.html">Plasetic Surgery Department</a></li>
-                                            <li><a href="departments-single.html">Dental Department</a></li>
-                                            <li><a href="departments-single.html">Psychological Department</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="blog.html">Блог</a></li>
+                                    <li><a href="{% url 'clinics' %}">Клиники</a></li>
+                                    <li><a href="{% url 'departments' %}">Отделения</a></li>
+                                    <li><a href="#">Блог</a></li>
                                     <li><a href="contact.html">Связаться с нами</a></li>
                                 </ul>
                             </div>
@@ -97,11 +87,16 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
-        {% block content %}
+
+    {% block content %}
+    {% endblock %}
+    <div class="container">
+        {% block container %}
         {% endblock %}
     </div>
+    <hr>
     <footer id="colorlib-footer" role="contentinfo">
+        <img width="52" height="120" src="https://res.cloudinary.com/practicaldev/image/fetch/s--4RkRuwpj--/c_limit,f_auto,fl_progressive,q_auto,w_100/https://dev-to-uploads.s3.amazonaws.com/i/wmv3mtusjwb3r13d5h2f.png">
         <div class="overlay"></div>
         <div class="container">
             <div class="row row-pb-md">
@@ -195,10 +190,11 @@
     </footer>
 </div>
 
+<div class="colorlib-loader"></div>
+
 <div class="gototop js-top">
     <a href="" class="js-gotop"><i class="icon-arrow-up"></i></a>
 </div>
-
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -211,8 +207,6 @@
 <script src="{% static 'js/magnific-popup-options.js' %}"></script>
 <script src="{% static 'js/sticky-kit.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"
-        integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD"
-        crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.js"></script>
 </body>
 </html>

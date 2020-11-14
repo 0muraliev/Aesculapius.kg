@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block container %}
+    <h1 class="text-center">Все медицинские отделения в городе Бишкек</h1>
+    <!-- Группировка по первой букве -->
+    {% regroup departments by name|first as letter_list %}
+    <ul class="list-unstyled">
+        {% for letter in letter_list %}
+            <li class="text-success"><strong>{{ letter.grouper }}</strong>
+                <ul>
+                    {% for department in letter.list %}
+                        <li class="list-unstyled"><a href="{{ department.get_absolute_url }}">{{ department.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <!-- Конец группировки -->
+{% endblock %}

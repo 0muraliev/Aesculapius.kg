@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <aside id="colorlib-hero" class="breadcrumbs">
+        <div class="flexslider">
+            <ul class="slides">
+                <li style="background-image: url({% static 'images/img_bg_6.jpg' %});">
+                    <div class="overlay"></div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2 col-md-pull-2 slider-text">
+                                <div class="slider-text-inner">
+                                    <h1><strong>Клиники </strong><span
+                                            class="badge bg-warning text-dark">{{ clinics.count }}</span></h1>
+                                    <h2>Здесь можно найти все медицинские клиники в городе Бишкек</h2>
+                                    <form class="d-flex" method="GET" action="{% url 'clinics' %}">{% csrf_token %}
+                                        <input class="form-control mr-2" type="search" name="key"
+                                               placeholder="Какую клинику Вы ищете?" aria-label="Search">
+                                        <button class="btn btn-primary" type="submit">
+                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search"
+                                                 fill="currentColor"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                      d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                                                <path fill-rule="evenodd"
+                                                      d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+{% endblock %}
+
+{% block container %}
+    <div class="colorlib-departments">
+        <div class="row animate-box">
+            {% for clinic in page_obj %}
+                <div class="col-md-4 g-5">
+                    <div class="department-wrap animate-box fadeInUp animated-fast">
+                        {% if clinic.image %}
+                            <a href="{{ clinic.get_absolute_url  }}">
+                                <div class="grid-1 col-md-6"
+                                     style="background-image: url({{ clinic.image.url }});"></div>
+                            </a>
+                        {% else %}
+                            <a href="{{ clinic.get_absolute_url  }}">
+                                <div class="grid-1 col-md-6"
+                                     style="background-image: url({% static 'images/default.jpg' %});"></div>
+                            </a>
+                        {% endif %}
+                        <div class="grid-2 col-md-6">
+                            <div class="desc">
+                                <p class="date">
+                                    <span><i class="fas fa-map-marker-alt"></i> {{ clinic.address }}</span>
+                                    <span><a href="#">4 <i class="icon-speech-bubble"></i></a></span>
+                                </p>
+                                <h2><a href="{{ clinic.get_absolute_url  }}">{{ clinic.name }}</a></h2>
+                                <p>{{ clinic.information|linebreaks|truncatechars:220 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-center">
+            {% if page_obj.has_previous %}
+                <li>
+                    <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                </li>
+            {% else %}
+                <li class="disabled">
+                    <a href="#" tabindex="-1" aria-disabled="true">Предыдущая</a>
+                </li>
+            {% endif %}
+
+            {% if page_obj.number|add:'-4' > 1 %}
+                <li><a href="?page={{ page_obj.number|add:'-5' }}">&hellip;</a></li>
+            {% endif %}
+
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li class="active" aria-current="page">
+              <span class="bg-primary">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+              </span>
+                    </li>
+                {% elif i > page_obj.number|add:'-5' and i < page_obj.number|add:'5' %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.paginator.num_pages > page_obj.number|add:'4' %}
+                <li><a href="?page={{ page_obj.number|add:'5' }}">&hellip;</a></li>
+            {% endif %}
+
+            {% if page_obj.has_next %}
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                </li>
+            {% else %}
+                <li class="disabled">
+                    <a href="#" tabindex="-1" aria-disabled="true">Следующая</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <!-- End pagination -->
+{% endblock %}

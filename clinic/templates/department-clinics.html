@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <aside id="colorlib-hero" class="breadcrumbs">
+        <div class="flexslider">
+            <ul class="slides">
+                <li style="background-image: url({% static 'images/img_bg_6.jpg' %});">
+                    <div class="overlay"></div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2 col-md-pull-2 slider-text">
+                                <div class="slider-text-inner">
+                                    <h1><strong>{{ department.name }}</strong><span
+                                            class="badge bg-warning text-dark">{{ clinics.count }}</span></h1>
+                                    <h2>Лечение в клиниках города Бишкек</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+{% endblock %}
+
+{% block container %}
+    <div class="colorlib-departments">
+        <div class="row animate-box">
+            {% for clinic in department_clinics %}
+                <div class="col-md-4 g-5">
+                    <div class="department-wrap animate-box fadeInUp animated-fast">
+                        {% if clinic.image %}
+                            <a href="{{ clinic.get_absolute_url }}">
+                                <div class="grid-1 col-md-6"
+                                     style="background-image: url({{ clinic.image.url }});"></div>
+                            </a>
+                        {% else %}
+                            <a href="{{ clinic.get_absolute_url }}">
+                                <div class="grid-1 col-md-6"
+                                     style="background-image: url({% static 'images/default.jpg' %});"></div>
+                            </a>
+                        {% endif %}
+                        <div class="grid-2 col-md-6">
+                            <div class="desc">
+                                <p class="date">
+                                    <span><i class="fas fa-map-marker-alt"></i> {{ clinic.address }}</span>
+                                    <span><a href="#">4 <i class="icon-speech-bubble"></i></a></span>
+                                </p>
+                                <h2><a href="{{ clinic.get_absolute_url }}">{{ clinic.name }}</a></h2>
+                                <p>{{ clinic.information|linebreaks|truncatechars:220 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

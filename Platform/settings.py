@@ -21,9 +21,12 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'bootstrap4',
+
     'core',
+    'clinic',
     'user_account',
 
+    'location_field.apps.DefaultConfig',
     'phonenumber_field',
 
     'allauth',
