@@ -45,12 +45,12 @@
                 <div class="col-md-4 g-5">
                     <div class="department-wrap animate-box fadeInUp animated-fast">
                         {% if clinic.image %}
-                            <a href="{% url 'clinic' clinic.id %}">
+                            <a href="{{ clinic.get_absolute_url  }}">
                                 <div class="grid-1 col-md-6"
                                      style="background-image: url({{ clinic.image.url }});"></div>
                             </a>
                         {% else %}
-                            <a href="{% url 'clinic' clinic.id %}">
+                            <a href="{{ clinic.get_absolute_url  }}">
                                 <div class="grid-1 col-md-6"
                                      style="background-image: url({% static 'images/default.jpg' %});"></div>
                             </a>
@@ -61,7 +61,7 @@
                                     <span><i class="fas fa-map-marker-alt"></i> {{ clinic.address }}</span>
                                     <span><a href="#">4 <i class="icon-speech-bubble"></i></a></span>
                                 </p>
-                                <h2><a href="{% url 'clinic' clinic.id %}">{{ clinic.name }}</a></h2>
+                                <h2><a href="{{ clinic.get_absolute_url  }}">{{ clinic.name }}</a></h2>
                                 <p>{{ clinic.information|linebreaks|truncatechars:220 }}</p>
                             </div>
                         </div>

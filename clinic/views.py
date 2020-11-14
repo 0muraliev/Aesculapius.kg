@@ -29,10 +29,9 @@ def clinics(request):
                                             'page_obj': page_obj})
 
 
-def clinic(request, id):
+def clinic(request, slug, id):
     """Все о клинике"""
-    clinic = Clinic.objects.get(id=id)
-
+    clinic = Clinic.objects.get(slug=slug, id=id)
     if request.method == 'POST':
         form = ReviewForm(data=request.POST)
         if form.is_valid():
@@ -45,7 +44,7 @@ def clinic(request, id):
                 messages.error(request, 'Вы уже оставили свой отзыв:)')
 
             messages.success(request, 'Вы успешно оставили отзыв!')
-            return redirect('clinic', id=clinic.id)
+            return redirect('clinic', slug=clinic.slug, id=id)
         else:
             messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
 

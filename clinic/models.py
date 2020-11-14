@@ -1,10 +1,13 @@
 from django.contrib.auth.forms import User
 from django.db import models
+from django.urls import reverse
+from django.utils.text import slugify
 from location_field.models.plain import PlainLocationField
 
 
 class Clinic(models.Model):
     name = models.CharField('Название', max_length=125)
+    slug = models.SlugField(max_length=125, unique=True)
     information = models.TextField('Основная информация', blank=True)
     medical_departments = models.ManyToManyField('MedicalDepartment')
     image = models.ImageField('Изображение',
@@ -17,6 +20,14 @@ class Clinic(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('clinic', kwargs={'slug': self.slug, 'id': self.id})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
 
 class MedicalDepartment(models.Model):
