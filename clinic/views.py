@@ -49,12 +49,21 @@ def clinic(request, slug, id):
             messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
 
     context = {}
+    context['form'] = ReviewForm()
     context['clinic'] = clinic
     context['reviews'] = Review.objects.filter(clinic__name=clinic)
-    context['form'] = ReviewForm()
     return render(request, 'clinic.html', context)
 
 
 def departments(request):
-    context = {'departments': MedicalDepartment.objects.order_by('name')}
-    return render(request, 'departments.html', context)
+    """Все медицинские отделения"""
+    return render(request, 'departments.html',
+                  {'departments': MedicalDepartment.objects.order_by('name')})
+
+
+def department(request, slug):
+    """Клиники связанные с медицинским отделением"""
+    department_clinics = Clinic.objects.filter(medical_departments__slug=slug)
+    department = MedicalDepartment.objects.get(slug=slug)
+    return render(request, 'department-clinics.html',
+                  {'department_clinics': department_clinics, 'department': department})

@@ -107,7 +107,7 @@
                 <h3><span class="text-primary">{{ clinic }}</span> обеспечивает следующие медицинские отделения:</h3>
                 <ul>
                     {% for department in clinic.medical_departments.all %}
-                        <li>{{ department }}</li>
+                        <a href="{{ department.get_absolute_url }}"><li>{{ department }}</li></a>
                     {% endfor %}
                 </ul>
             </div>

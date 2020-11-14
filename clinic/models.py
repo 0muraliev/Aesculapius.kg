@@ -24,6 +24,7 @@ class Clinic(models.Model):
     def get_absolute_url(self):
         return reverse('clinic', kwargs={'slug': self.slug, 'id': self.id})
 
+    # Преобразует название клиники в URL-адрес
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
@@ -32,9 +33,21 @@ class Clinic(models.Model):
 
 class MedicalDepartment(models.Model):
     name = models.CharField(max_length=125)
+    slug = models.SlugField(max_length=125, unique=True)
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('department', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
 
 class Review(models.Model):
@@ -55,7 +68,9 @@ class Review(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        # функция не дает повторно оставить отзыв
+        # Функция не дает повторно оставить отзыв
         constraints = [
             models.UniqueConstraint(fields=['user', 'clinic'], name='unique_review')
         ]
+        # Сортировка по дате изменения по убыванию
+        ordering = ['-updated']
