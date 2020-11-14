@@ -1,0 +1,5 @@
+{% load i18n %}
+{% load account %}
+
+{% user_display user as user_display %}
+<p><strong>Примечание:</strong> вы уже вошли как {{ user_display }}.</p>

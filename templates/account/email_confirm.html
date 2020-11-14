@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load account %}
+
+{% block content %}
+<h1>Подтвердите адрес электронной почты</h1>
+
+{% if confirmation %}
+
+{% user_display confirmation.email_address.user as user_display %}
+
+<p>{% blocktrans with confirmation.email_address.email as email %}Пожалуйста, подтвердите, что <a href="mailto:{{ email }}">{{ email }}</a> - это адрес электронной почты пользователя {{ user_display }}.{% endblocktrans %}</p>
+
+<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">{% csrf_token %}
+    <button class="btn btn-primary" type="submit">Подтвердить</button>
+</form>
+<br>
+{% else %}
+
+{% url 'account_email' as email_url %}
+
+<p>Срок действия ссылки для подтверждения по электронной почте истек или она недействительна. Пожалуйста, <a href="{{ email_url }}">, отправьте новый запрос на подтверждение по электронной почте.</a></p>
+
+{% endif %}
+{% endblock %}
