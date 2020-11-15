@@ -9,7 +9,7 @@ class Clinic(models.Model):
     name = models.CharField('Название', max_length=125)
     slug = models.SlugField(max_length=125, unique=True)
     information = models.TextField('Основная информация', blank=True)
-    medical_departments = models.ManyToManyField('MedicalDepartment')
+    medical_departments = models.ManyToManyField('MedicalDepartment', related_name='clinics')
     image = models.ImageField('Изображение',
                               upload_to='clinics',
                               null=True,
@@ -62,8 +62,8 @@ class Review(models.Model):
     rating = models.CharField('Оценка', max_length=1, choices=RATING_CHOICES)
     title = models.CharField('Название', max_length=50, blank=True)
     text = models.TextField('Отзыв(по желанию)', blank=True)
-    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

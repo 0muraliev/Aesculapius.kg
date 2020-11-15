@@ -26,15 +26,17 @@
     <div class="col-5">
         <h3 class="text-muted">Данные аккаунта</h3>
         {% include 'core/includes/messages.html' %}
-        <ul class="list-group list-group-flush">
-            {% if user.profile.photo %}
-                <img src="{{ user.profile.photo.url }}" class="img-thumbnail">
-            {% endif %}
-            <li class="list-group-item">Полное имя - {{ user.get_full_name }}</li>
-            <li class="list-group-item">Имя пользователя - @{{ user.username }}</li>
-            <li class="list-group-item">Электронная почта - {{ user.email }}</li>
-            <li class="list-group-item">Номер телефона - {{ user.profile.phone_number }}</li>
-        </ul>
+        <div class="contact-info-wrap">
+            <ul class="list-group list-group-flush">
+                {% if user.profile.photo %}
+                    <img src="{{ user.profile.photo.url }}" class="img-thumbnail">
+                {% endif %}
+                <li class="list-group-item">Полное имя - {{ user.get_full_name }}</li>
+                <li class="list-group-item">Имя пользователя - @{{ user.username }}</li>
+                <li class="list-group-item"><p><span><i class="icon-mail"></i></span> {{ user.email }}</p></li>
+                <li class="list-group-item"><p><span><i class="icon-phone"></i></span> <a href="tel://{{ user.profile.phone_number }}">{{ user.profile.phone_number }}</a></p></li>
+            </ul>
+        </div>
         <br>
         {% if request.user.id == user.id %}
             <table class="table table-borderless caption-top">

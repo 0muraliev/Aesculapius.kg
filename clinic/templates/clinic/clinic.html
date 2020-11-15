@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block head %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default" xmlns="http://www.w3.org/1999/html"
+            xmlns="http://www.w3.org/1999/html"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASlHwW6kgLT0NBbIsgDkE8JYBKrv5ghYI&callback=initMap&libraries=&v=weekly"
+            defer></script>
+    <style type="text/css">
+        #map {
+            height: 450px;
+            width: 1035px;
+        }
+    </style>
+    <script>
+        let map;
+        let arr = "{{ clinic.location }}".split(',').map(Number);
+        const bangalore = {lat: arr[0], lng: arr[1]};
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: bangalore,
+                zoom: 14,
+            });
+            new google.maps.Marker({
+                position: bangalore,
+                map,
+            });
+        }
+    </script>
+    <script>
+        const triggerTabList = [].slice.call(document.querySelectorAll('#myTab a'))
+        triggerTabList.forEach((triggerEl) => {
+            const tabTrigger = new mdb.Tab(triggerEl)
+
+            triggerEl.addEventListener('click', (e) => {
+                e.preventDefault()
+                tabTrigger.show()
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <aside id="colorlib-hero" class="breadcrumbs">
+        <div class="flexslider">
+            <ul class="slides">
+                <li style="background-image: url({% static 'images/img_bg_6.jpg' %});">
+                    <div class="overlay"></div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2 col-md-pull-2 slider-text">
+                                <div class="slider-text-inner">
+                                    <h1><strong>{{ clinic }}</strong></h1>
+                                    <h2>Общая информация</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <div class="row">
+    <div class="col-1">
+        <!-- Tab navs -->
+        <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+               aria-controls="v-pills-home" aria-selected="true">
+                Главная
+            </a>
+            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+               aria-controls="v-pills-profile" aria-selected="false">
+                Отделения
+            </a>
+            <a class="nav-link" id="v-pills-doctors-tab" data-toggle="pill" href="#v-pills-doctors" role="tab"
+               aria-controls="v-pills-doctors" aria-selected="false">
+                Доктора
+            </a>
+            <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
+               aria-controls="v-pills-messages" aria-selected="false">
+                Отзывы
+            </a>
+        </div>
+        <!-- Tab navs -->
+    </div>
+{% endblock %}
+
+{% block container %}
+    <div class="col-9">
+        {% include 'core/includes/messages.html' %}
+        <!-- Tab content -->
+        <div class="tab-content" id="v-pills-tabContent">
+            {% if clinic.image %}
+                <p><img src="{{ clinic.image.url }}" class="img-fluid hover-shadow rounded"></p>
+            {% else %}
+                <p><img src="{% static 'images/default.jpg' %}" class="img-fluid hover-shadow rounded"></p>
+            {% endif %}
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <p>{{ clinic.information }}</p>
+                <p><span class="text-primary">Связаться с нами: </span>{{ clinic.contact }}</p>
+                <p><span class="text-primary">Место расположения: </span>{{ clinic.address }}</p>
+                <div id='map'></div>
+            </div>
+            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                <h3><span class="text-primary">{{ clinic }}</span> обеспечивает следующие медицинские отделения:</h3>
+                <ul>
+                    {% for department in clinic.medical_departments.all %}
+                        <a href="{{ department.get_absolute_url }}"><li>{{ department }}</li></a>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="v-pills-doctors" role="tabpanel" aria-labelledby="v-pills-doctors-tab">
+                Наши доктора
+            </div>
+            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                <p class="h1">Отзывы клиники</p>
+                {% for rev in reviews.all %}
+                    <figure>
+                        <blockquote class="blockquote">
+                            <h3><strong>{{ rev.title }}</strong>
+                                <p class="text-info">{{ rev.get_rating_display }} - <small
+                                        class="text-muted">{{ rev.created|date:"d M Y, H:i" }}</small></p>
+                            </h3>
+                            <p class="lead">{{ rev.text }}</p>
+                        </blockquote>
+                        <figcaption class="blockquote-footer">
+                            <cite title="Source Title">{{ rev.user }}</cite>
+                        </figcaption>
+                    </figure>
+                {% endfor %}
+                <br>
+                {% if request.user.is_authenticated %}
+                    <form method="POST">{% csrf_token %}
+                        <div class="form-check form-check-inline">
+                            {% bootstrap_form form %}
+                        </div>
+                        <button class="btn btn-primary" type="submit">Оставить отзыв</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Tab content -->
+    </div>
+    </div>
+{% endblock %}

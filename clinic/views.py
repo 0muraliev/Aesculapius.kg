@@ -25,7 +25,7 @@ def clinics(request):
     paginator = Paginator(clinics, 9)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'clinics.html', {'clinics': clinics,
+    return render(request, 'clinic/clinics.html', {'clinics': clinics,
                                             'page_obj': page_obj})
 
 
@@ -52,12 +52,12 @@ def clinic(request, slug, id):
     context['form'] = ReviewForm()
     context['clinic'] = clinic
     context['reviews'] = Review.objects.filter(clinic__name=clinic)
-    return render(request, 'clinic.html', context)
+    return render(request, 'clinic/clinic.html', context)
 
 
 def departments(request):
     """Все медицинские отделения"""
-    return render(request, 'departments.html',
+    return render(request, 'clinic/departments.html',
                   {'departments': MedicalDepartment.objects.order_by('name')})
 
 
@@ -65,5 +65,5 @@ def department(request, slug):
     """Клиники связанные с медицинским отделением"""
     department_clinics = Clinic.objects.filter(medical_departments__slug=slug)
     department = MedicalDepartment.objects.get(slug=slug)
-    return render(request, 'department-clinics.html',
+    return render(request, 'clinic/department-clinics.html',
                   {'department_clinics': department_clinics, 'department': department})
