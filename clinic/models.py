@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from location_field.models.plain import PlainLocationField
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Clinic(models.Model):
@@ -16,7 +17,7 @@ class Clinic(models.Model):
                               blank=True)
     address = models.CharField('Адрес', max_length=255)
     location = PlainLocationField(based_fields=['address'], zoom=7, suffix='Bishkek')
-    contact = models.CharField('Связаться с нами', max_length=45)
+    contact = PhoneNumberField('Связаться с нами')
 
     def __str__(self):
         return self.name
