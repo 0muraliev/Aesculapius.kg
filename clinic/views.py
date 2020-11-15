@@ -40,10 +40,10 @@ def clinic(request, slug, id):
             clinic_review.user = request.user
             try:
                 clinic_review.save()
+                messages.success(request, 'Вы успешно оставили отзыв!')
             except IntegrityError:
                 messages.error(request, 'Вы уже оставили свой отзыв:)')
 
-            messages.success(request, 'Вы успешно оставили отзыв!')
             return redirect('clinic', slug=clinic.slug, id=id)
         else:
             messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')

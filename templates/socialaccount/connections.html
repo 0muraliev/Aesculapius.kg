@@ -2,52 +2,54 @@
 
 {% load i18n %}
 
-{% block content %}
-<h1 class="text-center user-select-none">Подключенные социальные сети</h1>
-{% include 'core/includes/messages.html' %}
+{% block container %}
+    <h1 class="text-center user-select-none">Подключенные социальные сети</h1>
+    {% include 'core/includes/messages.html' %}
 
-{% if form.accounts %}
-<p>Вы можете войти в свою учетную запись, используя любую из следующих сторонних учетных записей:</p>
+    {% if form.accounts %}
+        <p>Вы можете войти в свою учетную запись, используя любую из следующих сторонних учетных записей:</p>
 
 
-<form method="post" action="{% url 'socialaccount_connections' %}">
-{% csrf_token %}
+        <form method="post" action="{% url 'socialaccount_connections' %}">
+            {% csrf_token %}
 
-<fieldset>
-{% if form.non_field_errors %}
-<div id="errorMsg">{{ form.non_field_errors }}</div>
-{% endif %}
+            <fieldset>
+                {% if form.non_field_errors %}
+                    <div id="errorMsg">{{ form.non_field_errors }}</div>
+                {% endif %}
 
-{% for base_account in form.accounts %}
-{% with base_account.get_provider_account as account %}
-<div>
-<label for="id_account_{{ base_account.id }}">
-<input id="id_account_{{ base_account.id }}" type="radio" name="account" value="{{ base_account.id }}"/>
-<span class="socialaccount_provider {{ base_account.provider }} {{ account.get_brand.id }}">{{account.get_brand.name}} - </span>
-{{ account }}
-</label>
-</div>
-{% endwith %}
-{% endfor %}
-<div>
+                {% for base_account in form.accounts %}
+                    {% with base_account.get_provider_account as account %}
+                        <div>
+                            <label for="id_account_{{ base_account.id }}">
+                                <input id="id_account_{{ base_account.id }}" type="radio" name="account"
+                                       value="{{ base_account.id }}"/>
+                                <span class="socialaccount_provider {{ base_account.provider }} {{ account.get_brand.id }}">{{ account.get_brand.name }} - </span>
+                                {{ account }}
+                            </label>
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+                <div>
+                    <br>
+                    <i>
+                        <button type="submit" class="btn-danger">Отвязать</button>
+                    </i>
+                </div>
+
+            </fieldset>
+
+        </form>
+
+    {% else %}
+        <p>В настоящее время у вас нет учетных записей социальных сетей, связанных с этой учетной записью.</p>
+    {% endif %}
     <br>
-    <i><button type="submit" class="btn-danger">Отвязать</button></i>
-</div>
+    <h3 class="text-muted">Привязать стороннюю учетную запись</h3>
 
-</fieldset>
+    <ul class="socialaccount_providers">
+        {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+    </ul>
 
-</form>
-
-{% else %}
-<p>В настоящее время у вас нет учетных записей социальных сетей, связанных с этой учетной записью.</p>
-{% endif %}
-<br>
-<h3 class="text-muted">Привязать стороннюю учетную запись</h3>
-
-<ul class="socialaccount_providers">
-{% include "socialaccount/snippets/provider_list.html" with process="connect" %}
-</ul>
-
-{% include "socialaccount/snippets/login_extra.html" %}
-<hr>
+    {% include "socialaccount/snippets/login_extra.html" %}
 {% endblock %}

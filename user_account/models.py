@@ -7,6 +7,22 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Profile(models.Model):
+    GENDER_CHOICES = [
+        (None, 'Не указан'),
+        ('М', 'Мужчина'),
+        ('Ж', 'Женщина')
+    ]
+    CITY_CHOICES = [
+        (None, 'Не указан'),
+        ('БК', 'Бишкек'),
+        ('Ош', 'Ош'),
+        ('ДА', 'Джалал-Абад'),
+        ('ТК', 'Токмок'),
+        ('ТС', 'Талас'),
+        ('КЛ', 'Каракол'),
+        ('НН', 'Нарын'),
+        ('БН', 'Баткен')
+    ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = PhoneNumberField('Номер телефона', blank=True)
     itn = models.CharField('ИНН',
@@ -19,24 +35,12 @@ class Profile(models.Model):
                            null=True,
                            blank=True)
     gender = models.CharField('Пол',
-                              choices=(
-                                  ('М', 'Мужчина'),
-                                  ('Ж', 'Женщина')
-                              ),
+                              choices=GENDER_CHOICES,
                               max_length=1,
                               blank=True)
     birth_date = models.DateField('Дата рождения', null=True, blank=True)
     city = models.CharField('Город',
-                            choices=(
-                                ('БК', 'Бишкек'),
-                                ('Ош', 'Ош'),
-                                ('ДА', 'Джалал-Абад'),
-                                ('ТК', 'Токмок'),
-                                ('ТС', 'Талас'),
-                                ('КЛ', 'Каракол'),
-                                ('НН', 'Нарын'),
-                                ('БН', 'Баткен'),
-                            ),
+                            choices=CITY_CHOICES,
                             max_length=2,
                             blank=True)
     blood_type = models.CharField('Группа крови', max_length=30, blank=True)

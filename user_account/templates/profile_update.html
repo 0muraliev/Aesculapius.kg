@@ -1,12 +1,32 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+
 {% block content %}
-    <h1 class="text-center user-select-none">Персональные данные</h1>
-    {% include 'core/includes/messages.html' %}
-    <br>
+    <div class="row">
+        <h1 class="text-center user-select-none">Персональные данные</h1>
+        <div class="col-1">
+            <div class="nav flex-column nav-pills text-center">
+                <a class="nav-link" href="{% url 'profile' request.user.id %}">
+                    Профиль
+                </a>
+                <a class="nav-link" href="{% url 'account_email' %}">
+                    Управление почтой
+                </a>
+                <a class="nav-link" href="#">
+                    Сохраненное
+                </a>
+                <a class="nav-link active" href="{% url 'profile_update' %}">
+                    Настройки
+                </a>
+            </div>
+        </div>
+        {% include 'core/includes/messages.html' %}
+        <br>
+{% endblock %}
+
+{% block container %}
         <div class="row">
-            {% include 'includes/side_panel.html' %}
-            <div class="col-4">
+            <div class="col-5">
                 <h3 class="text-muted">Настройки и доступ</h3>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><a href="{% url 'socialaccount_connections' %}" class="text-primary">Подключения к социальным сетям</a></li>
@@ -24,5 +44,5 @@
 
             </div>
         </div>
-    <hr>
+    </div>
 {% endblock %}
