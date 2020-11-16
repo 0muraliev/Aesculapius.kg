@@ -13,8 +13,8 @@
                 <a class="nav-link active" href="{% url 'account_email' %}">
                     Управление почтой
                 </a>
-                <a class="nav-link" href="#">
-                    Сохраненное
+                <a class="nav-link" href="{% url 'favorite_clinics' %}">
+                    Избранные клиники
                 </a>
                 <a class="nav-link" href="{% url 'profile_update' %}">
                     Настройки
@@ -26,7 +26,7 @@
 {% block container %}
     {% include 'core/includes/messages.html' %}
     {% if user.emailaddress_set.all %}
-        <p>Следующие адреса электронной почты связаны с вашей учетной записью:</p>
+        <h1 class="text-muted">Следующие адреса электронной почты связаны с вашей учетной записью:</h1>
 
         <form action="{% url 'account_email' %}" class="email_list" method="post">{% csrf_token %}
             <fieldset class="blockLabels">

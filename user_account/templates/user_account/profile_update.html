@@ -12,8 +12,8 @@
                 <a class="nav-link" href="{% url 'account_email' %}">
                     Управление почтой
                 </a>
-                <a class="nav-link" href="#">
-                    Сохраненное
+                <a class="nav-link" href="{% url 'favorite_clinics' %}">
+                    Избранные клиники
                 </a>
                 <a class="nav-link active" href="{% url 'profile_update' %}">
                     Настройки
@@ -27,7 +27,7 @@
 {% block container %}
         <div class="row">
             <div class="col-5">
-                <h3 class="text-muted">Настройки и доступ</h3>
+                <h1 class="text-muted">Настройки и доступ</h1>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><a href="{% url 'socialaccount_connections' %}" class="text-primary">Подключения к социальным сетям</a></li>
                     <li class="list-group-item"><a href="{% url 'account_change_password' %}" class="text-primary">Изменить пароль</a></li>

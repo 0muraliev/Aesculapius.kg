@@ -26,7 +26,7 @@ def clinics(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'clinic/clinics.html', {'clinics': clinics,
-                                            'page_obj': page_obj})
+                                                   'page_obj': page_obj})
 
 
 def clinic(request, slug, id):
@@ -42,7 +42,7 @@ def clinic(request, slug, id):
                 clinic_review.save()
                 messages.success(request, 'Вы успешно оставили отзыв!')
             except IntegrityError:
-                messages.error(request, 'Вы уже оставили свой отзыв:)')
+                messages.info(request, 'Вы уже оставили свой отзыв:)')
 
             return redirect('clinic', slug=clinic.slug, id=id)
         else:

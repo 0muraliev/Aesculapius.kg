@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect
 
+from clinic.models import Clinic
 from .forms import UserForm, ProfileForm
 
 
@@ -38,4 +39,10 @@ def profile_update(request):
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
     return render(request, 'user_account/profile_update.html', {'user_form': user_form,
-                                                   'profile_form': profile_form})
+                                                                'profile_form': profile_form})
+
+
+@login_required
+def favorite_clinics(request):
+    context = {'favorite_clinics': Clinic.objects.filter(favorite_clinics=request.user.profile)}
+    return render(request, 'user_account/favorite_clinics.html', context)

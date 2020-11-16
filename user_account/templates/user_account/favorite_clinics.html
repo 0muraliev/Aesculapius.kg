@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <h1 class="text-center user-select-none">Персональные данные</h1>
+        <div class="col-1">
+            <div class="nav flex-column nav-pills text-center">
+                <a class="nav-link" href="{% url 'profile' request.user.id %}">
+                    Профиль
+                </a>
+                <a class="nav-link" href="{% url 'account_email' %}">
+                    Управление почтой
+                </a>
+                <a class="nav-link active" href="{% url 'favorite_clinics' %}">
+                    Избранные клиники
+                </a>
+                <a class="nav-link" href="{% url 'profile_update' %}">
+                    Настройки
+                </a>
+            </div>
+        </div>
+        <br>
+{% endblock %}
+
+{% block container %}
+        <h1 class="text-muted">Ваши Избранные клиники</h1>
+        <div class="row">
+            {% for fav in favorite_clinics %}
+                <div class="col-md-4 g-5">
+                    <div class="department-wrap animate-box fadeInUp animated-fast">
+                        {% if fav.image %}
+                            <a href="{{ fav.get_absolute_url  }}">
+                                <div class="grid-1 col-md-6"
+                                     style="background-image: url({{ fav.image.url }});"></div>
+                            </a>
+                        {% else %}
+                            <a href="{{ fav.get_absolute_url  }}">
+                                <div class="grid-1 col-md-6"
+                                     style="background-image: url({% static 'images/default.jpg' %});"></div>
+                            </a>
+                        {% endif %}
+                        <div class="grid-2 col-md-6">
+                            <div class="desc">
+                                <p class="date">
+                                    <span title="Адрес клиники"><i class="icon-location"></i> {{ fav.address }}</span><br>
+                                    <span title="Кол-во отзывов"><a href="{{ fav.get_absolute_url }}">{{ fav.reviews.count }} <i class="icon-speech-bubble"></i></a></span>
+                                </p>
+                                <h2><a href="{{ fav.get_absolute_url  }}">{{ fav.name }}</a></h2>
+                                <p>{{ fav.information|truncatechars:220 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

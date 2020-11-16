@@ -58,11 +58,11 @@
                         <div class="grid-2 col-md-6">
                             <div class="desc">
                                 <p class="date">
-                                    <span><i class="fas fa-map-marker-alt"></i> {{ clinic.address }}</span>
-                                    <span><a href="#">4 <i class="icon-speech-bubble"></i></a></span>
+                                    <span title="Адрес клиники"><i class="icon-location"></i> {{ clinic.address }}</span><br>
+                                    <span title="Кол-во отзывов"><a href="{{ clinic.get_absolute_url }}">{{ clinic.reviews.count }} <i class="icon-speech-bubble"></i></a></span>
                                 </p>
                                 <h2><a href="{{ clinic.get_absolute_url  }}">{{ clinic.name }}</a></h2>
-                                <p>{{ clinic.information|linebreaks|truncatechars:220 }}</p>
+                                <p>{{ clinic.information|truncatechars:220 }}</p>
                             </div>
                         </div>
                     </div>

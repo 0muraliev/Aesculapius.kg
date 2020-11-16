@@ -94,7 +94,7 @@
         <!-- Tab content -->
         <div class="tab-content" id="v-pills-tabContent">
             {% if clinic.image %}
-                <p><img src="{{ clinic.image.url }}" class="img-fluid hover-shadow rounded"></p>
+                <p><img src="{{ clinic.image.url }}" height="450" width="1030" class="hover-shadow rounded"></p>
             {% else %}
                 <p><img src="{% static 'images/default.jpg' %}" class="img-fluid hover-shadow rounded"></p>
             {% endif %}
@@ -120,14 +120,14 @@
                 {% for rev in reviews.all %}
                     <figure>
                         <blockquote class="blockquote">
-                            <h3><strong>{{ rev.title }}</strong>
+                            <h3><strong class="display-6">{{ rev.title }}</strong>
                                 <p class="text-info">{{ rev.get_rating_display }} - <small
                                         class="text-muted">{{ rev.created|date:"d M Y, H:i" }}</small></p>
                             </h3>
-                            <p class="lead">{{ rev.text }}</p>
+                            <p class="h2"><em>{{ rev.text }}</em></p>
                         </blockquote>
                         <figcaption class="blockquote-footer">
-                            <cite title="Source Title">{{ rev.user }}</cite>
+                            <cite>{{ rev.user.get_full_name }}</cite>
                         </figcaption>
                     </figure>
                 {% endfor %}
