@@ -13,7 +13,7 @@
                     Управление почтой
                 </a>
                 <a class="nav-link" href="{% url 'favorite_clinics' %}">
-                    Избранные клиники
+                    Сохранено
                 </a>
                 <a class="nav-link active" href="{% url 'profile_update' %}">
                     Настройки
@@ -41,7 +41,6 @@
                     {% bootstrap_form profile_form %}
                     <button class="btn btn-primary" type="submit">Сохранить изменения</button>
                 </form>
-
             </div>
         </div>
     </div>

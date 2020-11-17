@@ -32,7 +32,7 @@ def clinics(request):
 def clinic(request, slug, id):
     """Все о клинике"""
     clinic = Clinic.objects.get(slug=slug, id=id)
-    if request.method == 'POST':
+    if 'review' in request.POST:
         form = ReviewForm(data=request.POST)
         if form.is_valid():
             clinic_review = form.save(commit=False)
@@ -47,6 +47,14 @@ def clinic(request, slug, id):
             return redirect('clinic', slug=clinic.slug, id=id)
         else:
             messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
+
+    if 'favorite' in request.POST:
+        clinic.favorite_clinics.add(request.user.profile)
+        messages.info(request, 'Сохранено в избранные.')
+
+    if 'favorite_remove' in request.POST:
+        clinic.favorite_clinics.remove(request.user.profile)
+        messages.info(request, 'Удалено из избранных.')
 
     context = {}
     context['form'] = ReviewForm()

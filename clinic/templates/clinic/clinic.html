@@ -83,6 +83,17 @@
                aria-controls="v-pills-messages" aria-selected="false">
                 Отзывы
             </a>
+            <form method="POST">{% csrf_token %}
+                {% if clinic in request.user.profile.favorite_clinic.all %}
+                    <button title="Из избранных" class="btn" type="submit" name="favorite_remove">
+                        <span class="fas fa-bookmark"></span>
+                    </button>
+                {% else %}
+                    <button title="В избранные" class="btn" type="submit" name="favorite">
+                        <span class="far fa-bookmark"></span>
+                    </button>
+                {% endif %}
+            </form>
         </div>
         <!-- Tab navs -->
     </div>
@@ -98,6 +109,7 @@
             {% else %}
                 <p><img src="{% static 'images/default.jpg' %}" class="img-fluid hover-shadow rounded"></p>
             {% endif %}
+
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                 <p>{{ clinic.information }}</p>
                 <p><span class="text-primary">Связаться с нами: </span>{{ clinic.contact }}</p>
@@ -120,14 +132,18 @@
                 {% for rev in reviews.all %}
                     <figure>
                         <blockquote class="blockquote">
-                            <h3><strong class="display-6">{{ rev.title }}</strong>
+                            <h3><strong>{{ rev.title }}</strong>
                                 <p class="text-info">{{ rev.get_rating_display }} - <small
                                         class="text-muted">{{ rev.created|date:"d M Y, H:i" }}</small></p>
                             </h3>
-                            <p class="h2"><em>{{ rev.text }}</em></p>
+                            <p class="h3"><em>{{ rev.text }}</em></p>
                         </blockquote>
                         <figcaption class="blockquote-footer">
-                            <cite>{{ rev.user.get_full_name }}</cite>
+                            {% if rev.user.get_full_name %}
+                                <cite>{{ rev.user.get_full_name }}</cite>
+                            {% else %}
+                                <cite>{{ rev.user.username }}</cite>
+                            {% endif %}
                         </figcaption>
                     </figure>
                 {% endfor %}
@@ -137,7 +153,7 @@
                         <div class="form-check form-check-inline">
                             {% bootstrap_form form %}
                         </div>
-                        <button class="btn btn-primary" type="submit">Оставить отзыв</button>
+                        <button class="btn btn-primary" name="review" type="submit">Оставить отзыв</button>
                     </form>
                 {% endif %}
             </div>
