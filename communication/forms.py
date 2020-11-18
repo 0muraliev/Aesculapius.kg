@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Message
+from .models import Message, Appointment
 
 
 class MessageForm(forms.ModelForm):
@@ -12,3 +12,9 @@ class MessageForm(forms.ModelForm):
                     'message': forms.Textarea(
                         attrs={'placeholder': 'Пожалуйста, опишите свою идею как можно подробнее...'})
                 }
+
+
+class AppointmentForm(forms.ModelForm):
+    class Meta:
+        model = Appointment
+        fields = ['message']
