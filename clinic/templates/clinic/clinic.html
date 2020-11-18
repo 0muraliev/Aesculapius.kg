@@ -152,7 +152,7 @@
                         </figcaption>
                     </figure>
                 {% endfor %}
-
+                {% if request.user.is_authenticated %}
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -175,7 +175,6 @@
                     </div>
                 </div>
                 <br>
-                {% if request.user.is_authenticated %}
                     <form method="POST">{% csrf_token %}
                         <div class="form-check form-check-inline">
                             {% bootstrap_form form %}

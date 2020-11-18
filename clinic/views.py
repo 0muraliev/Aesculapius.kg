@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.db.models import Q
@@ -36,13 +37,16 @@ def clinic(request, slug, id):
     """
     Методы добавления/удаления клиники в/из Избранные
     """
-    if 'favorite' in request.POST:
-        clinic.favorite_clinics.add(request.user.profile)
-        messages.info(request, 'Сохранено в избранные.')
+    try:
+        if 'favorite' in request.POST:
+            clinic.favorite_clinics.add(request.user.profile)
+            messages.info(request, 'Сохранено в избранные.')
 
-    if 'favorite_remove' in request.POST:
-        clinic.favorite_clinics.remove(request.user.profile)
-        messages.info(request, 'Удалено из избранных.')
+        elif 'favorite_remove' in request.POST:
+            clinic.favorite_clinics.remove(request.user.profile)
+            messages.info(request, 'Удалено из избранных.')
+    except AttributeError:
+        messages.info(request, 'Чтобы сохранить клинику в Избранные, нужно авторизоваться')
 
     return review_leave_or_change(request, clinic)
 
@@ -50,6 +54,10 @@ def clinic(request, slug, id):
 def review_leave_or_change(request, clinic):
     """Методы оставить отзыв/изменить отзыв"""
     reviews = Review.objects.filter(clinic__name=clinic)
+    if not request.user.is_authenticated:
+        return render(request, 'clinic/clinic.html', {'clinic': clinic,
+                                                      'reviews': reviews})
+
     review = reviews.get(user_id=request.user.id)
 
     if 'review_leave' in request.POST:
@@ -69,6 +77,7 @@ def review_leave_or_change(request, clinic):
             messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
 
     elif 'review_change' in request.POST:
+        review = reviews.get(user_id=request.user.id)
         form_change = ReviewForm(data=request.POST, instance=review)
         if form_change.is_valid():
             form_change.save()
