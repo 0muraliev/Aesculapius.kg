@@ -116,6 +116,7 @@
                 <p><span class="text-primary">Место расположения: </span>{{ clinic.address }}</p>
                 <div id='map'></div>
             </div>
+
             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                 <h3><span class="text-primary">{{ clinic }}</span> обеспечивает следующие медицинские отделения:</h3>
                 <ul>
@@ -124,18 +125,22 @@
                     {% endfor %}
                 </ul>
             </div>
+
             <div class="tab-pane fade" id="v-pills-doctors" role="tabpanel" aria-labelledby="v-pills-doctors-tab">
                 Наши доктора
             </div>
+
             <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                 <p class="h1">Отзывы клиники</p>
                 {% for rev in reviews.all %}
                     <figure>
                         <blockquote class="blockquote">
                             <h3><strong>{{ rev.title }}</strong>
-                                <p class="text-info">{{ rev.get_rating_display }} - <small
-                                        class="text-muted">{{ rev.created|date:"d M Y, H:i" }}</small></p>
-                            </h3>
+                                <p class="text-info">{{ rev.get_rating_display }} - <small class="text-muted">{{ rev.created|date:"d M Y, H:i" }}
+                                    {% if request.user == rev.user %}
+                                        <i type="button" title="Изменить отзыв" data-toggle="modal" data-target="#exampleModal" class="fas fa-edit"></i>
+                                    {% endif %}
+                           </small></p></h3>
                             <p class="h3"><em>{{ rev.text }}</em></p>
                         </blockquote>
                         <figcaption class="blockquote-footer">
@@ -147,13 +152,35 @@
                         </figcaption>
                     </figure>
                 {% endfor %}
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">Изменить отзыв.</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="POST">{% csrf_token %}
+                                <div class="modal-body">
+                                    {% bootstrap_form form_change %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                    <button type="submit" class="btn btn-warning" name="review_change">Изменить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <br>
                 {% if request.user.is_authenticated %}
                     <form method="POST">{% csrf_token %}
                         <div class="form-check form-check-inline">
                             {% bootstrap_form form %}
                         </div>
-                        <button class="btn btn-primary" name="review" type="submit">Оставить отзыв</button>
+                        <button class="btn btn-primary" name="review_leave" type="submit">Оставить отзыв</button>
                     </form>
                 {% endif %}
             </div>

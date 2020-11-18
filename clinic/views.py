@@ -32,7 +32,27 @@ def clinics(request):
 def clinic(request, slug, id):
     """Все о клинике"""
     clinic = Clinic.objects.get(slug=slug, id=id)
-    if 'review' in request.POST:
+
+    """
+    Методы добавления/удаления клиники в/из Избранные
+    """
+    if 'favorite' in request.POST:
+        clinic.favorite_clinics.add(request.user.profile)
+        messages.info(request, 'Сохранено в избранные.')
+
+    if 'favorite_remove' in request.POST:
+        clinic.favorite_clinics.remove(request.user.profile)
+        messages.info(request, 'Удалено из избранных.')
+
+    return review_leave_or_change(request, clinic)
+
+
+def review_leave_or_change(request, clinic):
+    """Методы оставить отзыв/изменить отзыв"""
+    reviews = Review.objects.filter(clinic__name=clinic)
+    review = reviews.get(user_id=request.user.id)
+
+    if 'review_leave' in request.POST:
         form = ReviewForm(data=request.POST)
         if form.is_valid():
             clinic_review = form.save(commit=False)
@@ -44,23 +64,23 @@ def clinic(request, slug, id):
             except IntegrityError:
                 messages.info(request, 'Вы уже оставили свой отзыв:)')
 
-            return redirect('clinic', slug=clinic.slug, id=id)
+            return redirect('clinic', slug=clinic.slug, id=clinic.id)
         else:
             messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
 
-    if 'favorite' in request.POST:
-        clinic.favorite_clinics.add(request.user.profile)
-        messages.info(request, 'Сохранено в избранные.')
+    elif 'review_change' in request.POST:
+        form_change = ReviewForm(data=request.POST, instance=review)
+        if form_change.is_valid():
+            form_change.save()
+            messages.info(request, 'Комментарий изменен')
+            return redirect('clinic', slug=clinic.slug, id=clinic.id)
 
-    if 'favorite_remove' in request.POST:
-        clinic.favorite_clinics.remove(request.user.profile)
-        messages.info(request, 'Удалено из избранных.')
-
-    context = {}
-    context['form'] = ReviewForm()
-    context['clinic'] = clinic
-    context['reviews'] = Review.objects.filter(clinic__name=clinic)
-    return render(request, 'clinic/clinic.html', context)
+    form_change = ReviewForm(instance=review)
+    form = ReviewForm()
+    return render(request, 'clinic/clinic.html', {'clinic': clinic,
+                                                  'form': form,
+                                                  'form_change': form_change,
+                                                  'reviews': reviews})
 
 
 def departments(request):
