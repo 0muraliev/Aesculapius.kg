@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('clinic/', include('clinic.urls')),
     path('profile/', include('user_account.urls')),
+    path('contact/', include('communication.urls')),
     path('accounts/', include('allauth.urls')),
 ]
 

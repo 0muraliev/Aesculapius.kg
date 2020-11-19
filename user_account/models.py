@@ -5,6 +5,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from phonenumber_field.modelfields import PhoneNumberField
 
+from clinic.models import Clinic
+
 
 class Profile(models.Model):
     GENDER_CHOICES = [
@@ -24,6 +26,10 @@ class Profile(models.Model):
         ('БН', 'Баткен')
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    favorite_clinic = models.ManyToManyField(Clinic,
+                                             related_name='favorite_clinics',
+                                             verbose_name='Избранные клиники',
+                                             blank=True)
     phone_number = PhoneNumberField('Номер телефона', blank=True)
     itn = models.CharField('ИНН',
                            unique=True,

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect
 
+from clinic.models import Clinic
 from .forms import UserForm, ProfileForm
 
 
@@ -18,7 +19,7 @@ def profile(request, id):
         return redirect('profile', id=request.user.id)
 
     context = {'user': user}
-    return render(request, 'profile.html', context)
+    return render(request, 'user_account/profile.html', context)
 
 
 @login_required
@@ -37,5 +38,21 @@ def profile_update(request):
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'profile_update.html', {'user_form': user_form,
-                                                   'profile_form': profile_form})
+    return render(request, 'user_account/profile_update.html', {'user_form': user_form,
+                                                                'profile_form': profile_form})
+
+
+@login_required
+def favorite_clinics(request):
+    context = {'favorite_clinics': Clinic.objects.filter(favorite_clinics=request.user.profile)}
+    return render(request, 'user_account/favorite_clinics.html', context)
+
+
+@login_required
+def profile_inactive(request):
+    """Метод деактивации/удаления аккаунта"""
+    user = request.user
+    user.is_active = False
+    user.save()
+    messages.info(request, """Вы успешно удалили аккаунт. Чтобы восстановить его, обратитесь в службу поддержки""")
+    return redirect('home')
