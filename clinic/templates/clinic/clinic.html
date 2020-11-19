@@ -109,7 +109,11 @@
             {% else %}
                 <p><img src="{% static 'images/default.jpg' %}" class="img-fluid hover-shadow rounded"></p>
             {% endif %}
-
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2 col-md-pull-2 slider-text">
+                    <p><button type="button" class="btn btn-primary btn-block btn-learn" data-toggle="modal" data-target="#exampleModal">Записаться на прием</button></p>
+                </div>
+            </div>
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                 <p>{{ clinic.information }}</p>
                 <p><span class="text-primary">Связаться с нами: </span>{{ clinic.contact }}</p>
@@ -152,7 +156,7 @@
                         </figcaption>
                     </figure>
                 {% endfor %}
-                {% if request.user.is_authenticated %}
+            {% if request.user in reviews %}
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -174,6 +178,7 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
                 <br>
                     <form method="POST">{% csrf_token %}
                         <div class="form-check form-check-inline">
@@ -181,7 +186,6 @@
                         </div>
                         <button class="btn btn-primary" name="review_leave" type="submit">Оставить отзыв</button>
                     </form>
-                {% endif %}
             </div>
         </div>
         <!-- Tab content -->

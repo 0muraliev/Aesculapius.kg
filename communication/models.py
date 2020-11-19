@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 
 from clinic.models import Clinic
 from user_account.models import Profile
@@ -24,7 +23,7 @@ class Appointment(models.Model):
     email = models.EmailField(User.get_email_field_name(), null=True, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
     itn = models.CharField(max_length=14, blank=True)
-    birth_date = models.DateTimeField(blank=True)
+    birth_date = models.DateTimeField(null=True, blank=True)
     gender = models.CharField(max_length=30, blank=True)
     blood_type = models.CharField(max_length=30, blank=True)
     message = models.TextField('Сообщение')

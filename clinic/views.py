@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.db.models import Q
@@ -33,9 +32,13 @@ def clinics(request):
 def clinic(request, slug, id):
     """Все о клинике"""
     clinic = Clinic.objects.get(slug=slug, id=id)
+    favorite_add_or_remove(request, clinic)
+    return review_leave_or_change(request, clinic)
 
+
+def favorite_add_or_remove(request, clinic):
     """
-    Методы добавления/удаления клиники в/из Избранные
+    Метод добавления/удаления клиники в/из Избранные
     """
     try:
         if 'favorite' in request.POST:
@@ -45,10 +48,9 @@ def clinic(request, slug, id):
         elif 'favorite_remove' in request.POST:
             clinic.favorite_clinics.remove(request.user.profile)
             messages.info(request, 'Удалено из избранных.')
+
     except AttributeError:
         messages.info(request, 'Чтобы сохранить клинику в Избранные, нужно авторизоваться')
-
-    return review_leave_or_change(request, clinic)
 
 
 def review_leave_or_change(request, clinic):
@@ -58,38 +60,45 @@ def review_leave_or_change(request, clinic):
         return render(request, 'clinic/clinic.html', {'clinic': clinic,
                                                       'reviews': reviews})
 
-    review = reviews.get(user_id=request.user.id)
+    if not reviews:
+        return render(request, 'clinic/clinic.html', {'clinic': clinic,
+                                                      'reviews': reviews,
+                                                      'form': ReviewForm()})
 
-    if 'review_leave' in request.POST:
-        form = ReviewForm(data=request.POST)
-        if form.is_valid():
-            clinic_review = form.save(commit=False)
-            clinic_review.clinic = clinic
-            clinic_review.user = request.user
-            try:
-                clinic_review.save()
-                messages.success(request, 'Вы успешно оставили отзыв!')
-            except IntegrityError:
-                messages.info(request, 'Вы уже оставили свой отзыв:)')
+    elif reviews:
+        if 'review_leave' in request.POST:
+            form = ReviewForm(data=request.POST)
+            if form.is_valid():
+                clinic_review = form.save(commit=False)
+                clinic_review.clinic = clinic
+                clinic_review.user = request.user
+                try:
+                    clinic_review.save()
+                    messages.success(request, 'Вы успешно оставили отзыв!')
+                except IntegrityError:
+                    messages.info(request, 'Вы уже оставили свой отзыв:)')
 
-            return redirect('clinic', slug=clinic.slug, id=clinic.id)
-        else:
-            messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
+                return redirect('clinic', slug=clinic.slug, id=clinic.id)
+            else:
+                messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
 
-    elif 'review_change' in request.POST:
-        review = reviews.get(user_id=request.user.id)
-        form_change = ReviewForm(data=request.POST, instance=review)
-        if form_change.is_valid():
-            form_change.save()
-            messages.info(request, 'Комментарий изменен')
-            return redirect('clinic', slug=clinic.slug, id=clinic.id)
+        elif 'review_change' in request.POST:
+            review = reviews.get(user_id=request.user.id)
+            form_change = ReviewForm(data=request.POST, instance=review)
+            if form_change.is_valid():
+                form_change.save()
+                messages.info(request, 'Комментарий изменен')
+                return redirect('clinic', slug=clinic.slug, id=clinic.id)
+            else:
+                form_change = ReviewForm(instance=review)
+                return render(request, 'clinic/clinic.html', {'clinic': clinic,
+                                                              'form': ReviewForm(),
+                                                              'form_change': form_change,
+                                                              'reviews': reviews})
 
-    form_change = ReviewForm(instance=review)
-    form = ReviewForm()
-    return render(request, 'clinic/clinic.html', {'clinic': clinic,
-                                                  'form': form,
-                                                  'form_change': form_change,
-                                                  'reviews': reviews})
+        return render(request, 'clinic/clinic.html', {'clinic': clinic,
+                                                      'form': ReviewForm(),
+                                                      'reviews': reviews})
 
 
 def departments(request):
