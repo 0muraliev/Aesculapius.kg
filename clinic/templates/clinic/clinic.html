@@ -109,6 +109,7 @@
             {% else %}
                 <p><img src="{% static 'images/default.jpg' %}" class="img-fluid hover-shadow rounded"></p>
             {% endif %}
+
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                 <p>{{ clinic.information }}</p>
                 <p><span class="text-primary">Связаться с нами: </span>{{ clinic.contact }}</p>
@@ -151,36 +152,36 @@
                         </figcaption>
                     </figure>
                 {% endfor %}
-            {% if request.user in reviews %}
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">Изменить отзыв.</h3>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                {% if review_user %}
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="exampleModalLabel">Изменить отзыв.</h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form method="POST">{% csrf_token %}
+                                    <div class="modal-body">
+                                        {% bootstrap_form form_review_change %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                        <button type="submit" class="btn btn-warning" name="review_change">Изменить</button>
+                                    </div>
+                                </form>
                             </div>
-                            <form method="POST">{% csrf_token %}
-                                <div class="modal-body">
-                                    {% bootstrap_form form_change %}
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                                    <button type="submit" class="btn btn-warning" name="review_change">Изменить</button>
-                                </div>
-                            </form>
                         </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
                 <br>
-                    <form method="POST">{% csrf_token %}
-                        <div class="form-check form-check-inline">
-                            {% bootstrap_form form %}
-                        </div>
-                        <button class="btn btn-primary" name="review_leave" type="submit">Оставить отзыв</button>
-                    </form>
+                <form method="POST">{% csrf_token %}
+                    <div class="form-check form-check-inline">
+                        {% bootstrap_form form_review %}
+                    </div>
+                    <button class="btn btn-primary" name="review_leave" type="submit">Оставить отзыв</button>
+                </form>
             </div>
         </div>
         <!-- Tab content -->
