@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load bootstrap4 %}
+
+{% block head %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASlHwW6kgLT0NBbIsgDkE8JYBKrv5ghYI&callback=initMap&libraries=&v=weekly" defer></script>
+    <script>
+        let map;
+        let arr = "{{ clinic.location }}".split(',').map(Number);
+        const bangalore = {lat: arr[0], lng: arr[1]};
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: bangalore,
+                zoom: 14,
+            });
+            new google.maps.Marker({
+                position: bangalore,
+                map,
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block container %}
+<div id="colorlib-contact">
+        <div class="container">
+            <div class="row">
+            {% include 'core/includes/messages.html' %}
+				<div class="col-md-12 animate-box">
+					<h1>Контактная информация <strong class="text-primary">{{ clinic.name }}</strong></h1>
+					<div class="row contact-info-wrap">
+						<div class="col-md-3">
+							<p><span><i class="icon-location"></i></span>{{ clinic.address }}</p>
+						</div>
+						<div class="col-md-2">
+							<p><span><i class="icon-phone"></i></span> <a href="tel://+996550050560">{{ clinic.contact }}</a></p>
+						</div>
+                    </div>
+                </div>
+				<div class="col-md-12 animate-box">
+					<div class="row">
+						<div class="col-md-6">
+                            <h2>Запись на прием</h2>
+                            <form method="POST">{% csrf_token %}
+                                {% bootstrap_form appointment_form %}
+                                <button type="submit" class="btn btn-primary">Записаться</button>
+                            </form>
+						</div>
+						<div class="col-md-6">
+							<div id="map"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

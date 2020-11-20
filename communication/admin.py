@@ -13,4 +13,4 @@ class MessageAdmin(admin.ModelAdmin):
 @admin.register(Appointment)
 class MessageAdmin(admin.ModelAdmin):
     model = Appointment
-    list_display = ['message']
+    list_display = ['profile', 'clinic', 'email', 'phone_number', 'date']

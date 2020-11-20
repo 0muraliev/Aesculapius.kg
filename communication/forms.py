@@ -17,4 +17,10 @@ class MessageForm(forms.ModelForm):
 class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
-        fields = ['message']
+        fields = ['phone_number', 'message']
+        widgets = {
+            'phone_number': forms.TextInput(attrs={'placeholder': '+996550050560'}),
+            'message': forms.Textarea(
+                attrs={'placeholder': 'Напишите, к какому специалисту Вы хотите записаться.'}
+            )
+        }

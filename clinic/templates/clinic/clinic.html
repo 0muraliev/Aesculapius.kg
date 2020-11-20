@@ -83,6 +83,9 @@
                aria-controls="v-pills-messages" aria-selected="false">
                 Отзывы
             </a>
+            <a class="nav-link " href="{% url 'appointment' clinic.id %}">
+                Запись<br>на прием
+            </a>
             <form method="POST">{% csrf_token %}
                 {% if clinic in request.user.profile.favorite_clinic.all %}
                     <button title="Из избранных" class="btn" type="submit" name="favorite_remove">
@@ -118,7 +121,7 @@
             </div>
 
             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                <h3><span class="text-primary">{{ clinic }}</span> обеспечивает следующие медицинские отделения:</h3>
+                <h2><span class="text-primary">{{ clinic }}</span> обеспечивает следующие медицинские отделения:</h2>
                 <ul>
                     {% for department in clinic.medical_departments.all %}
                         <a href="{{ department.get_absolute_url }}"><li>{{ department }}</li></a>
