@@ -134,16 +134,24 @@
             </div>
 
             <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                <p class="h1">Отзывы клиники</p>
+                <p class="h1">Отзывы клиники</p><br>
                 {% for rev in reviews.all %}
-                    <figure>
+                    <figure class="testimony">
                         <blockquote class="blockquote">
                             <h3><strong>{{ rev.title }}</strong>
-                                <p class="text-info">{{ rev.get_rating_display }} - <small class="text-muted">{{ rev.created|date:"d M Y, H:i" }}
+                                <p class="color">
+                                    {% if rev.rating == '1' %}<i class="icon-star3"></i>
+                                    {% elif rev.rating == '2' %}<i class="icon-star3"></i><i class="icon-star3"></i>
+                                    {% elif rev.rating == '3' %}<i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i>
+                                    {% elif rev.rating == '4' %}<i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i>
+                                    {% elif rev.rating == '5' %}<i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i><i class="icon-star3"></i>
+                                    {% endif %}
+                                    <small class="text-muted"> - {{ rev.created|date:"d M Y, H:i" }}
                                     {% if request.user == rev.user %}
                                         <i type="button" title="Изменить отзыв" data-toggle="modal" data-target="#exampleModal" class="fas fa-edit"></i>
                                     {% endif %}
-                           </small></p></h3>
+                                    </small>
+                                </p></h3>
                             <p class="h3"><em>{{ rev.text }}</em></p>
                         </blockquote>
                         <figcaption class="blockquote-footer">
@@ -152,6 +160,7 @@
                             {% else %}
                                 <cite>{{ rev.user.username }}</cite>
                             {% endif %}
+                            <hr>
                         </figcaption>
                     </figure>
                 {% endfor %}

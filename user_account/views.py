@@ -5,6 +5,7 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 
 from clinic.models import Clinic
+from communication.models import Appointment
 from .forms import UserForm, ProfileForm
 
 
@@ -18,8 +19,9 @@ def profile(request, id):
     if request.user.id != user.id:
         return redirect('profile', id=request.user.id)
 
-    context = {'user': user}
-    return render(request, 'user_account/profile.html', context)
+    appointments = Appointment.objects.filter(profile__user=user)
+    return render(request, 'user_account/profile.html', {'user': user,
+                                                         'appointments': appointments})
 
 
 @login_required

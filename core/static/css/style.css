@@ -1297,9 +1297,7 @@ h1, h2, h3, h4, h5, h6, figure {
 .testimony {
   display: block;
   width: 100%;
-  position: relative;
-  padding: 0;
-  padding-left: 160px; }
+  position: relative;}
   @media screen and (max-width: 768px) {
     .testimony {
       margin-bottom: 70px; } }

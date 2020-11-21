@@ -40,9 +40,9 @@
                                    value="{{ emailaddress.email }}"/>
                             {{ emailaddress.email }} [
                             {% if emailaddress.verified %}
-                                <span class="text-success">проверенный</span>
+                                <span class="text-info">проверенный</span>
                             {% else %}
-                                <span class="text-warning">непроверенный</span>
+                                <span class="text-muted">непроверенный</span>
                             {% endif %}
                             ]{% if emailaddress.primary %} - [<span class="text-muted"> основной </span>
                             ]{% endif %}

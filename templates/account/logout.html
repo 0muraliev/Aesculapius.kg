@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 
-{% load i18n %}
-
 {% block container %}
 <h1 class="text-center user-select-none">Выход</h1>
-<p>Вы уверены, что хотите выйти?</p>
+<p class="text-center">Вы уверены, что хотите выйти?</p>
 
-<form method="post" action="{% url 'account_logout' %}">{% csrf_token %}
+<form class="text-center" method="post" action="{% url 'account_logout' %}">{% csrf_token %}
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
   {% endif %}

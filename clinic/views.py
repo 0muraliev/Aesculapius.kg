@@ -70,7 +70,7 @@ def review_leave_or_change(request, clinic, reviews):
         form_change = ReviewForm(data=request.POST, instance=review)
         if form_change.is_valid():
             form_change.save()
-            messages.info(request, 'Комментарий изменен')
+            messages.info(request, 'Отзыв изменен.')
             return redirect('clinic', slug=clinic.slug, id=clinic.id)
 
     review_user = request.user.reviews.filter(clinic_id=clinic.id)

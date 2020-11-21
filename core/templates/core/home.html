@@ -13,7 +13,7 @@
                                 <div class="slider-text-inner">
                                     <h1>Ваше здоровье всегда на первом месте</h1>
                                     <h2>По отдельности они живут в Bookmarksgrove прямо на берегу Семантики, большого языкового океана.</h2>
-                                    <p><a class="btn btn-primary btn-lg btn-learn">Записаться на прием</a></p>
+                                    <p><a href="{% url 'clinics' %}" class="btn btn-primary btn-lg btn-learn">Записаться на прием</a></p>
                                 </div>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                                 <div class="slider-text-inner">
                                     <h1>Мы поможем вам найти лучшего врача вокруг вас</h1>
                                     <h2>По отдельности они живут в Bookmarksgrove прямо на берегу Семантики, большого языкового океана.</h2>
-                                    <p><a class="btn btn-primary btn-lg btn-learn">Записаться на прием</a></p>
+                                    <p><a href="{% url 'clinics' %}" class="btn btn-primary btn-lg btn-learn">Записаться на прием</a></p>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                 <div class="slider-text-inner">
                                     <h1>Гарантированно безопасное и действенное лекарство</h1>
                                     <h2>По отдельности они живут в Bookmarksgrove прямо на берегу Семантики, большого языкового океана.</h2>
-                                    <p><a class="btn btn-primary btn-lg btn-learn">Записаться на прием</a></p>
+                                    <p><a href="{% url 'clinics' %}" class="btn btn-primary btn-lg btn-learn">Записаться на прием</a></p>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                                 <div class="slider-text-inner">
                                     <h1>Помощь в повышении качества стимулирует инновации</h1>
                                     <h2>По отдельности они живут в Bookmarksgrove прямо на берегу Семантики, большого языкового океана.</h2>
-                                    <p><a class="btn btn-primary btn-lg btn-learn">Записаться на прием</a></p>
+                                    <p><a href="{% url 'clinics' %}" class="btn btn-primary btn-lg btn-learn">Записаться на прием</a></p>
                                 </div>
                             </div>
                         </div>
@@ -229,84 +229,6 @@
         </div>
     </div>
 
-    <div id="colorlib-about">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-push-6 animate-box">
-                    <img class="img-responsive about-img" src="{% static 'images/about.png' %}">
-                </div>
-                <div class="col-md-6 col-md-pull-6 animate-box">
-                    <h2>О Aesculapius.kg</h2>
-                    <p>
-                        Даже всемогущий Пойнтинг не контролирует слепые тексты, это почти неортографическая жизнь.
-                        Однажды небольшая строчка слепого текста по имени Lorem Ipsum решила уйти в далекий Мир грамматики.
-                    </p>
-                    <div class="fancy-collapse-panel">
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingOne">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                           aria-expanded="true" aria-controls="collapseOne">Наша миссия
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <p>Далеко-далеко, за словесными горами, вдали от стран Vokalia и Consonantia живут слепые тексты.</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>По отдельности они живут в Bookmarksgrove прямо на берегу Семантики, большого языкового океана.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingTwo">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
-                                           href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Наше видение
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel"
-                                     aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                        <p>Далеко-далеко, за словесными горами, вдали от стран Vokalia и Consonantia живут слепые тексты.
-                                            По отдельности они живут в Bookmarksgrove прямо на берегу Семантики, большого языкового океана.
-                                        </p>
-                                        <ul>
-                                            <li>Разлученные они живут в Закладочной роще справа</li>
-                                            <li>Разлученные они живут в Закладочной роще справа</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingThree">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
-                                           href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Почему нужно выбрать нас</a>
-                                    </h4>
-                                </div>
-                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel"
-                                     aria-labelledby="headingThree">
-                                    <div class="panel-body">
-                                        <p>Далеко-далеко, за словесными горами, вдали от стран Vokalia и Consonantia живут слепые тексты.
-                                            По отдельности они живут в Bookmarksgrove прямо на берегу Семантики, большого языкового океана.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="colorlib-choose">
         <div class="container-fluid">
             <div class="row">
@@ -358,7 +280,6 @@
         </div>
     </div>
 
-
     <div class="colorlib-doctor">
         <div class="container">
             <div class="row animate-box">
@@ -384,7 +305,7 @@
                                         <p>Даже всемогущий Пойнтинг не контролирует слепые тексты, это почти неортографическая жизнь.</p>
                                         <p>
                                             <a class="btn btn-primary">Связаться</a>
-                                            <a class="btn btn-primary btn-outline">Записаться на прием</a>
+                                            <a href="{% url 'clinics' %}" class="btn btn-primary btn-outline">Записаться на прием</a>
                                         </p>
                                     </div>
                                 </div>
@@ -395,38 +316,6 @@
                             </div>
 {#                        </div>#}
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="colorlib-testimonial" class="colorlib-bg-section">
-        <div class="container">
-            <div class="row animate-box">
-                <div class="col-md-12 colorlib-heading">
-                    <h2>Наши пациенты и их мнение</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 animate-box">
-{#                    <div class="owl-carousel">#}
-                        <div class="item">
-                            <div class="testimony">
-                                <span class="img-user"
-                                      style="background-image: url({% static 'images/person2.jpg' %});"></span>
-                                <span class="user">Carl Bean</span>
-                                <blockquote>
-                                    <p>"Even the all-powerful Pointing has no control about the blind texts it is an
-                                        almost unorthographic life One day however a small line of blind text by the
-                                        name of Lorem Ipsum decided to leave for the far World of Grammar."</p>
-                                    <p class="color"><span><i class="icon-star3"></i></span><span><i
-                                            class="icon-star3"></i></span><span><i
-                                            class="icon-star3"></i></span><span><i
-                                            class="icon-star3"></i></span><span><i class="icon-star3"></i></span></p>
-                                </blockquote>
-                            </div>
-                        </div>
-{#                    </div>#}
                 </div>
             </div>
         </div>
