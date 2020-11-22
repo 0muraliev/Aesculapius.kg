@@ -1,7 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth.forms import User
 
-from .models import Message, Profile, Appointment
+from .models import Message, Appointment
 
 
 @admin.register(Message)

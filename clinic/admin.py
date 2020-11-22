@@ -1,12 +1,13 @@
 from django.contrib import admin
 
-from .models import Clinic, MedicalDepartment, Review
+from user_account.models import MedicalDepartment
+from .models import Clinic, Review
 
 
 @admin.register(Clinic)
 class ClinicAdmin(admin.ModelAdmin):
     model = Clinic
-    list_display = ('name', 'address', 'id')
+    list_display = ('user', 'name', 'address', 'id')
     # Автозаполнение slug при именовании клиники
     prepopulated_fields = {'slug': ('name',)}
 

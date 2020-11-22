@@ -1,16 +1,15 @@
 {% extends "base.html" %}
 
-{% load i18n %}
 {% load account %}
 
-{% block content %}
+{% block container %}
 <h1>Подтвердите адрес электронной почты</h1>
 
 {% if confirmation %}
 
 {% user_display confirmation.email_address.user as user_display %}
 
-<p>{% blocktrans with confirmation.email_address.email as email %}Пожалуйста, подтвердите, что <a href="mailto:{{ email }}">{{ email }}</a> - это адрес электронной почты пользователя {{ user_display }}.{% endblocktrans %}</p>
+<p>Пожалуйста, подтвердите, что <a href="mailto:{{ confirmation.email_address.email }}">{{ confirmation.email_address.email }}</a> - это адрес электронной почты пользователя {{ user_display }}.</p>
 
 <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">{% csrf_token %}
     <button class="btn btn-primary" type="submit">Подтвердить</button>

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
 
-{% block content %}
-<form method="POST" id="signup_form" action="{% url 'account_signup' %}">{% csrf_token %}
-    <h1 class="display-4 text-center user-select-none">Регистрация</h1>
+{% block container %}
+<form method="POST" action="{% url 'clinic_signup' %}">{% csrf_token %}
+    <h1 class="display-4 text-center user-select-none">Регистрация клиники</h1>
     <div class="row">
         <div class="col-sm-4 my-3 mx-auto p-3 px-md-4 mb-3 bg-white rounded shadow">
-            {% bootstrap_form form %}
+            {% bootstrap_form clinic_signup %}
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
             {% endif %}

@@ -20,8 +20,8 @@
             </ul>
             <button class="btn btn-primary btn-sm btn-block" type="submit">Войти</button>
             <div class="dropdown-divider"></div>
-            Новый клиент? <a class="text-primary" href="{% url 'account_signup' %}">Создайте аккаунт</a>.
-            <br>
+            Новый клиент? <a class="text-primary" href="{% url 'account_signup' %}">Создайте аккаунт</a>.<br>
+            <a href="{% url 'clinic_signup' %}">Зарегистрировать клинику</a>.<br>
               {% if redirect_field_value %}
               <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
               {% endif %}

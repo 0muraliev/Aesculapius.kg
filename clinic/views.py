@@ -4,8 +4,9 @@ from django.db import IntegrityError
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
-from .forms import ReviewForm
-from .models import Clinic, Review, MedicalDepartment
+from user_account.models import MedicalDepartment
+from .forms import ReviewForm, ClinicSignupForm
+from .models import Clinic, Review
 
 
 def clinics(request):
@@ -27,6 +28,21 @@ def clinics(request):
     page_obj = paginator.get_page(page_number)
     return render(request, 'clinic/clinics.html', {'clinics': clinics,
                                                    'page_obj': page_obj})
+
+
+# def clinic_profile(request, id):
+#     clinic_profile = Clinic.objects.get()
+
+
+def clinic_signup(request):
+    if request.method == 'POST':
+        form = ClinicSignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Вы зарегистрировали клинику')
+
+    form = ClinicSignupForm()
+    return render(request, 'clinic/clinic_signup.html', {'clinic_signup': form})
 
 
 def clinic(request, slug, id):

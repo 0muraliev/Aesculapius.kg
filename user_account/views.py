@@ -1,12 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect
 
 from clinic.models import Clinic
 from communication.models import Appointment
 from .forms import UserForm, ProfileForm
+from .models import User
 
 
 @login_required

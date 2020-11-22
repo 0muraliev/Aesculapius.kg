@@ -1,10 +1,9 @@
-from django.contrib.auth.models import User
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 
 from clinic.models import Clinic
-from user_account.models import Profile
+from user_account.models import Profile, User
 
 
 class Message(models.Model):
