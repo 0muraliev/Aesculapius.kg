@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Message, Appointment
+from .models import Message, Appointment, Letter
 
 
 class MessageForm(forms.ModelForm):
@@ -22,5 +22,17 @@ class AppointmentForm(forms.ModelForm):
             'phone_number': forms.TextInput(attrs={'placeholder': '+996550050560'}),
             'message': forms.Textarea(
                 attrs={'placeholder': 'Напишите, к какому специалисту Вы хотите записаться.'}
+            )
+        }
+
+
+class LetterForm(forms.ModelForm):
+    class Meta:
+        model = Letter
+        fields = ['answer']
+        widgets = {
+            'answer': forms.Textarea(
+                attrs={'placeholder': 'Отправить письмо',
+                       'style': 'resize:none; width:auto; height: 150px;'},
             )
         }

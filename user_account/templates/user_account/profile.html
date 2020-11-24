@@ -74,7 +74,7 @@
                         <div class="panel-heading" role="tab">
                             <h4 class="panel-title">
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ appointment.id }}" aria-expanded="false">
-                                    Запись в {{ appointment.clinic }}
+                                    Запись в {{ appointment.clinic }} {% if appointment.letter %}<i class="fas fa-check text-success"></i>{% endif %}
                                 </a>
                             </h4>
                         </div>
@@ -84,7 +84,13 @@
                                 <ul>
                                     <li>Контактный номер {{ appointment.phone_number }}</li>
                                     <li>Дата обращения - {{ appointment.date }}</li>
-                                    <li>Заявка - {{ appointment }}</li>
+                                    <br>
+                                    <strong>Обратная связь</strong>
+                                    {% if appointment.letter %}
+                                        <p class="text-muted">{{ appointment.letter.answer }}</p>
+                                    {% else %}
+                                        <p class="text-muted">В ожидании <i class="far fa-clock"></i></p>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>

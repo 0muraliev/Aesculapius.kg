@@ -5,10 +5,11 @@ from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
+from communication.forms import LetterForm
 from communication.models import Appointment
 from user_account.decorators import clinic_required
 from user_account.forms import ClinicForm
-from user_account.models import MedicalDepartment, Clinic, Profile
+from user_account.models import MedicalDepartment, Clinic
 from .forms import ReviewForm, ClinicSignupForm
 from .models import Review
 
@@ -40,7 +41,7 @@ def clinic_profile(request, id):
     clinic_profile = Clinic.objects.get(id=id)
     appointments = Appointment.objects.filter(clinic_id=id)
     return render(request, 'clinic/clinic_profile.html', {'clinic': clinic_profile,
-                                                          'appointment': appointments})
+                                                          'appointments': appointments})
 
 
 @login_required

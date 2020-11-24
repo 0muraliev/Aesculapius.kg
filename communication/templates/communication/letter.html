@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+    <h1 class="text-center user-select-none">Персональные данные</h1>
+    <div class="col-1">
+        <div class="nav flex-column nav-pills text-center">
+            <a class="nav-link active" href="{% url 'clinic_profile' clinic.id %}">
+                Профиль
+            </a>
+            <a class="nav-link" href="{% url 'account_email' %}">
+                Управление почтой
+            </a>
+            <a class="nav-link" href="#">
+                Специалисты
+            </a>
+            <a class="nav-link" href="{% url 'clinic_update' %}">
+                Настройки
+            </a>
+        </div>
+    </div>
+    <br>
+{% endblock %}
+
+{% block container %}
+    <div class="col-md-7 animate-box">
+        <h1 class="text-muted">Заявка от {{ appointment.user.get_full_name }}</h1>
+        <div class="panel panel-default">
+            <div role="tabpanel">
+                <div class="panel-body">
+                    <p>{{ appointment.message }}</p>
+                    <ul>
+                        <li>Контактный номер {{ appointment.phone_number }}</li>
+                        <li>Электронный адрес - {{ appointment.email }}</li>
+                        <li>Пол - {{ appointment.gender }}</li>
+                        <li>Группа крови - {{ appointment.blood_type }}</li>
+                        <li>Дата обращения - {{ appointment.date }}</li>
+                        <br>
+                        {% if appointment.letter %}
+                            <strong>Обратная связь</strong>
+                            <p>{{ appointment.letter.answer }}</p>
+                        {% else %}
+                            <form method="POST">{% csrf_token %}
+                                {% bootstrap_form letter_form %}
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                            </form>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

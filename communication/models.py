@@ -33,3 +33,9 @@ class Appointment(models.Model):
 
     def __str__(self):
         return 'Appointment from {}'.format(self.profile.user.username)
+
+
+class Letter(models.Model):
+    appointment = models.OneToOneField(Appointment, on_delete=models.CASCADE)
+    answer = models.TextField('Обратная связь')
+    date = models.DateTimeField('Дата отправки', auto_now_add=True)

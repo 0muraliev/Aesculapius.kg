@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Message, Appointment
+from .models import Message, Appointment, Letter
 
 
 @admin.register(Message)
@@ -13,3 +13,9 @@ class MessageAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     model = Appointment
     list_display = ['profile', 'clinic', 'email', 'phone_number', 'date']
+
+
+@admin.register(Letter)
+class LetterAdmin(admin.ModelAdmin):
+    model = Letter
+    list_display = ['appointment', 'answer', 'id']

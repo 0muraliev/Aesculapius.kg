@@ -1,8 +1,10 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from clinic.models import Clinic
-from .forms import MessageForm, AppointmentForm
+from user_account.models import Profile
+from .forms import MessageForm, AppointmentForm, LetterForm
 from .models import Appointment
 
 
@@ -26,28 +28,51 @@ def contact(request):
     return render(request, 'communication/contact.html', {'form': MessageForm})
 
 
+@login_required
 def make_appointment(request, id):
     clinic = Clinic.objects.get(id=id)
-    profile = request.user.profile
     if request.method == 'POST':
         form = AppointmentForm(data=request.POST)
         if form.is_valid():
-            appointment_form = Appointment(
-                profile=profile,
-                clinic=clinic,
-                email=request.user.email,
-                phone_number=form.cleaned_data['phone_number'],
-                message=form.cleaned_data['message'],
-                itn=profile.itn,
-                birth_date=profile.birth_date,
-                gender=profile.gender,
-                blood_type=profile.blood_type
-            )
-            appointment_form.save()
-            messages.success(request, 'Заявка отправлена. В течение 24 часов мы отправим Вам письмо в личный кабинет.')
+            try:
+                profile = request.user.profile
+                appointment_form = Appointment(
+                    user=request.user,
+                    profile=profile,
+                    clinic=clinic,
+                    email=request.user.email,
+                    phone_number=form.cleaned_data['phone_number'],
+                    message=form.cleaned_data['message'],
+                    itn=profile.itn,
+                    birth_date=profile.birth_date,
+                    gender=profile.gender,
+                    blood_type=profile.blood_type
+                )
+                appointment_form.save()
+                messages.success(request,
+                                 'Заявка отправлена. В течение 24 часов мы отправим Вам письмо в личный кабинет.')
+            except Profile.DoesNotExist:
+                messages.info(request, 'Чтобы записаться на прием, авторизуйтесь через аккаунт профиля.')
         else:
             messages.info(request, 'Пожалуйста, проверьте правильность заполнения формы.')
 
     appointment_form = AppointmentForm()
     return render(request, 'communication/appointment.html', {'appointment_form': appointment_form,
                                                               'clinic': clinic})
+
+
+def letter(request, id):
+    clinic = Clinic.objects.get(user_id=request.user)
+    appointment = Appointment.objects.get(id=id)
+    if request.method == 'POST':
+        form = LetterForm(request.POST)
+        if form.is_valid():
+            letter_form = form.save(commit=False)
+            letter_form.appointment = appointment
+            letter_form.save()
+            messages.info(request, 'Письмо отправлено')
+            return redirect('clinic_profile', id=clinic.id)
+
+    return render(request, 'communication/letter.html', {'appointment': appointment,
+                                                         'clinic': clinic,
+                                                         'letter_form': LetterForm()})
