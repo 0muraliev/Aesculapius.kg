@@ -1,12 +1,16 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
-from user_account.models import MedicalDepartment
+from communication.models import Appointment
+from user_account.decorators import clinic_required
+from user_account.forms import ClinicForm
+from user_account.models import MedicalDepartment, Clinic, Profile
 from .forms import ReviewForm, ClinicSignupForm
-from .models import Clinic, Review
+from .models import Review
 
 
 def clinics(request):
@@ -30,8 +34,29 @@ def clinics(request):
                                                    'page_obj': page_obj})
 
 
-# def clinic_profile(request, id):
-#     clinic_profile = Clinic.objects.get()
+@login_required
+@clinic_required
+def clinic_profile(request, id):
+    clinic_profile = Clinic.objects.get(id=id)
+    appointments = Appointment.objects.filter(clinic_id=id)
+    return render(request, 'clinic/clinic_profile.html', {'clinic': clinic_profile,
+                                                          'appointment': appointments})
+
+
+@login_required
+@transaction.atomic
+def clinic_update(request):
+    if request.method == 'POST':
+        clinic_form = ClinicForm(data=request.POST, files=request.FILES, instance=request.user.clinic)
+        if clinic_form.is_valid():
+            clinic_form.save()
+            messages.success(request, 'Ваш профиль успешно обновлен!')
+            return redirect('clinic_profile', id=request.user.clinic.id)
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
+    else:
+        clinic_form = ClinicForm(instance=request.user.clinic)
+    return render(request, 'clinic/clinic_update.html', {'clinic_form': clinic_form})
 
 
 def clinic_signup(request):
@@ -39,7 +64,10 @@ def clinic_signup(request):
         form = ClinicSignupForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Вы зарегистрировали клинику')
+            messages.success(request, 'Вы зарегистрировали клинику! Пожалуйста, войдите.')
+            return redirect('clinic_profile', id=request.user.clinic.id)
+        else:
+            messages.info(request, 'Пожалуйста, исправьте ошибку ниже.')
 
     form = ClinicSignupForm()
     return render(request, 'clinic/clinic_signup.html', {'clinic_signup': form})
@@ -49,25 +77,31 @@ def clinic(request, slug, id):
     """Все о клинике"""
     clinic = Clinic.objects.get(slug=slug, id=id)
     reviews = Review.objects.filter(clinic_id=clinic.id)
-    review_user = request.user.reviews.filter(clinic_id=clinic.id)
     favorite_add_or_remove(request, clinic)
-    if not review_user:
-        return render(request, 'clinic/clinic.html', {'clinic': clinic,
-                                                      'reviews': reviews,
-                                                      'review_user': review_user,
-                                                      'form_review': ReviewForm()})
-    elif not reviews and not review_user:
-        return render(request, 'clinic/clinic.html', {'clinic': clinic,
-                                                      'form_review': ReviewForm()})
-    else:
-        return review_leave_or_change(request, clinic, reviews)
+
+    return review_leave_or_change(request, clinic, reviews)
 
 
 def review_leave_or_change(request, clinic, reviews):
-    review = reviews.get(user_id=request.user.id)
+    review_user = request.user.reviews.filter(clinic_id=clinic.id)
+    if not reviews and not review_user:
+        context = {'clinic': clinic,
+                   'form_review': ReviewForm()}
+    elif not review_user:
+        context = {'clinic': clinic,
+                   'reviews': reviews,
+                   'review_user': review_user,
+                   'form_review': ReviewForm()}
+    else:
+        context = {'clinic': clinic,
+                   'reviews': reviews,
+                   'review_user': review_user,
+                   'form_review': ReviewForm(),
+                   'form_review_change': ReviewForm(instance=reviews.get(user_id=request.user.id))}
+
     if 'review_leave' in request.POST:
         form = ReviewForm(data=request.POST)
-        if form.is_valid():
+        if form.is_valid() and not request.user.is_clinic:
             clinic_review = form.save(commit=False)
             clinic_review.clinic = clinic
             try:
@@ -79,24 +113,20 @@ def review_leave_or_change(request, clinic, reviews):
             except ValueError:
                 messages.info(request, 'Пожалуйста, убедитесь, что вы авторизованы.')
             return redirect('clinic', slug=clinic.slug, id=clinic.id)
+
+        elif request.user.clinic:
+            messages.info(request, 'Чтобы оставить отзыв, авторизуйтесь через аккаунт профиля.')
         else:
-            messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
+            messages.info(request, 'Пожалуйста, исправьте ошибку ниже.')
 
     elif 'review_change' in request.POST:
-        form_change = ReviewForm(data=request.POST, instance=review)
+        form_change = ReviewForm(data=request.POST, instance=reviews.get(user_id=request.user.id))
         if form_change.is_valid():
             form_change.save()
             messages.info(request, 'Отзыв изменен.')
             return redirect('clinic', slug=clinic.slug, id=clinic.id)
 
-    review_user = request.user.reviews.filter(clinic_id=clinic.id)
-    form_review = ReviewForm()
-    form_change = ReviewForm(instance=review)
-    return render(request, 'clinic/clinic.html', {'clinic': clinic,
-                                                  'reviews': reviews,
-                                                  'review_user': review_user,
-                                                  'form_review': form_review,
-                                                  'form_review_change': form_change})
+    return render(request, 'clinic/clinic.html', context)
 
 
 def favorite_add_or_remove(request, clinic):

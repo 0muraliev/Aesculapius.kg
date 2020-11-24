@@ -7,7 +7,7 @@ from user_account.models import Profile, User
 
 
 class Message(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True, related_name='messages')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='messages')
     email = models.EmailField(User.get_email_field_name(), null=True, blank=True)
     image = models.ImageField('Приложить фотографию(по желанию)', upload_to='messages', blank=True)
     message_subject = models.CharField('Тема сообщения', max_length=80)
@@ -15,10 +15,11 @@ class Message(models.Model):
     date = models.DateTimeField('Дата обращения', auto_now_add=True)
 
     def __str__(self):
-        return 'Message from {}'.format(self.profile.user.username)
+        return 'Message from {}'.format(self.user.username)
 
 
 class Appointment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='appointments')
     profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True, related_name='appointments')
     clinic = models.ForeignKey(Clinic, on_delete=models.SET_NULL, null=True, blank=True, related_name='appointments')
     email = models.EmailField(User.get_email_field_name(), null=True, blank=True)

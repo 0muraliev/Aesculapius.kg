@@ -7,18 +7,33 @@
         <h1 class="text-center user-select-none">Персональные данные</h1>
         <div class="col-1">
             <div class="nav flex-column nav-pills text-center">
-                <a class="nav-link" href="{% url 'profile' request.user.id %}">
-                    Профиль
-                </a>
-                <a class="nav-link active" href="{% url 'account_email' %}">
-                    Управление почтой
-                </a>
-                <a class="nav-link" href="{% url 'favorite_clinics' %}">
-                    Сохранено
-                </a>
-                <a class="nav-link" href="{% url 'profile_update' %}">
-                    Настройки
-                </a>
+                {% if not request.user.is_clinic %}
+                    <a class="nav-link" href="{% url 'profile' request.user.profile.id %}">
+                        Профиль
+                    </a>
+                    <a class="nav-link active" href="{% url 'account_email' %}">
+                        Управление почтой
+                    </a>
+                    <a class="nav-link" href="{% url 'favorite_clinics' %}">
+                        Сохранено
+                    </a>
+                    <a class="nav-link" href="{% url 'profile_update' %}">
+                        Настройки
+                    </a>
+                {% else %}
+                    <a class="nav-link" href="{% url 'clinic_profile' request.user.clinic.id %}">
+                        Профиль
+                    </a>
+                    <a class="nav-link active" href="{% url 'account_email' %}">
+                        Управление почтой
+                    </a>
+                    <a class="nav-link" href="#">
+                        Специалисты
+                    </a>
+                    <a class="nav-link" href="{% url 'clinic_update' %}">
+                        Настройки
+                    </a>
+                {% endif %}
             </div>
         </div>
 {% endblock %}

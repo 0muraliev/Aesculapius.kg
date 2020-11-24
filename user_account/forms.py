@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import User, Profile
+from .models import User, Profile, Clinic
 
 
 class UserForm(forms.ModelForm):
@@ -17,4 +17,13 @@ class ProfileForm(forms.ModelForm):
             'birth_date': forms.SelectDateWidget(years=range(1940, 2021)),
             'gender': forms.RadioSelect,
             'phone_number': forms.TextInput(attrs={'placeholder': '+996 XXX XXXXXX'})
+        }
+
+
+class ClinicForm(forms.ModelForm):
+    class Meta:
+        model = Clinic
+        fields = ('name', 'image', 'information', 'medical_departments', 'contact', 'address',)
+        widgets = {
+            'contact': forms.TextInput(attrs={'placeholder': '+996 XXX XXXXXX'})
         }

@@ -9,7 +9,7 @@ from .models import Review
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ('rating', 'title', 'text')
+        fields = ('rating', 'title', 'text',)
 
     def __init__(self, *args, **kwargs):
         super(ReviewForm, self).__init__(*args, **kwargs)
@@ -29,5 +29,5 @@ class ClinicSignupForm(UserCreationForm):
         user.is_clinic = True
         user.email = self.cleaned_data['email']
         user.save()
-        Clinic.objects.create(user=user)
+        Clinic.objects.create(user=user, name=user.username)
         return user

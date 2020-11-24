@@ -12,7 +12,7 @@ def contact(request):
         if form.is_valid():
             message = form.save(commit=False)
             try:
-                message.profile = request.user.profile
+                message.user = request.user
                 message.email = request.user.email
                 message.save()
                 messages.success(request, 'Сообщение отправлено.')

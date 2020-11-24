@@ -5,11 +5,13 @@ from django.shortcuts import render, redirect
 
 from clinic.models import Clinic
 from communication.models import Appointment
+from .decorators import profile_required
 from .forms import UserForm, ProfileForm
 from .models import User
 
 
 @login_required
+@profile_required
 def profile(request, id):
     """
     Личный кабинет персонального пользователя.

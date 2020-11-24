@@ -44,14 +44,18 @@
                                 <div class="col-md-2">
                                     <div class="loc">
                                         {% if request.user.is_authenticated %}
-                                        <p><a class="text-danger" href="{% url 'account_logout' %}">Выйти</a>
-                                        <a href="{% url 'profile' request.user.id %}"><span class="icon"><i>
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16"
-                                                 class="bi bi-person-fill" fill="currentColor"
-                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                            </svg></i></span>
-                                        </a></p>
+                                            <p><a class="text-danger" href="{% url 'account_logout' %}">Выйти</a>
+                                            {% if not request.user.is_clinic %}
+                                                <a href="{% url 'profile' request.user.id %}">
+                                            {% else %}
+                                                <a href="{% url 'clinic_profile' request.user.clinic.id %}">
+                                            {% endif %}
+                                                <span class="icon"><i><svg width="1em" height="1em" viewBox="0 0 16 16"
+                                                    class="bi bi-person-fill" fill="currentColor"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                                </svg></i></span>
+                                            </a></p>
                                         {% else %}
                                         <a href="{% url 'account_login' %}">Авторизоваться</a>
                                         {% endif %}

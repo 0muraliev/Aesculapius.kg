@@ -110,8 +110,12 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     """
-    Определение сигналов, чтобы модель Profile автоматически обновлялась при создании/изменении данных модели User.
+    Определение сигналов, чтобы модель Profile/Clinic автоматически обновлялась при создании/изменении данных модели User.
     """
-    if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
+    if not instance.is_clinic:
+        if created:
+            Profile.objects.create(user=instance)
+        instance.profile.save()
+
+    elif instance.is_clinic:
+        instance.clinic.save()
