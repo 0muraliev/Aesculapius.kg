@@ -29,5 +29,4 @@ class ClinicSignupForm(UserCreationForm):
         user.is_clinic = True
         user.email = self.cleaned_data['email']
         user.save()
-        Clinic.objects.create(user=user, name=user.username)
         return user

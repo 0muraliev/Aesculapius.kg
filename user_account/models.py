@@ -113,10 +113,12 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     """
     Определение сигналов, чтобы модель Profile/Clinic автоматически обновлялась при создании/изменении данных модели User.
     """
-    if not instance.is_clinic:
+    if instance.is_clinic:
+        if created:
+            Clinic.objects.create(user=instance, name=instance.username)
+        instance.clinic.save()
+
+    else:
         if created:
             Profile.objects.create(user=instance)
         instance.profile.save()
-
-    elif instance.is_clinic:
-        instance.clinic.save()

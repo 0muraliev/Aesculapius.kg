@@ -65,7 +65,6 @@ def clinic_signup(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Вы зарегистрировали клинику! Пожалуйста, войдите.')
-            return redirect('clinic_profile', id=request.user.clinic.id)
         else:
             messages.info(request, 'Пожалуйста, исправьте ошибку ниже.')
 
@@ -83,19 +82,21 @@ def clinic(request, slug, id):
 
 
 def review_leave_or_change(request, clinic, reviews):
-    review_user = request.user.reviews.filter(clinic_id=clinic.id)
-    if not reviews and not review_user:
+    if request.user.is_anonymous:
+        context = {'clinic': clinic,
+                   'reviews': reviews}
+    elif not reviews and not request.user.reviews.filter(clinic_id=clinic.id):
         context = {'clinic': clinic,
                    'form_review': ReviewForm()}
-    elif not review_user:
+    elif not request.user.reviews.filter(clinic_id=clinic.id):
         context = {'clinic': clinic,
                    'reviews': reviews,
-                   'review_user': review_user,
+                   'review_user': request.user.reviews.filter(clinic_id=clinic.id),
                    'form_review': ReviewForm()}
     else:
         context = {'clinic': clinic,
                    'reviews': reviews,
-                   'review_user': review_user,
+                   'review_user': request.user.reviews.filter(clinic_id=clinic.id),
                    'form_review': ReviewForm(),
                    'form_review_change': ReviewForm(instance=reviews.get(user_id=request.user.id))}
 

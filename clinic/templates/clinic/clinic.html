@@ -188,12 +188,16 @@
                     </div>
                 {% endif %}
                 <br>
+            {% if request.user.is_authenticated %}
                 <form method="POST">{% csrf_token %}
                     <div class="form-check form-check-inline">
                         {% bootstrap_form form_review %}
                     </div>
                     <button class="btn btn-primary" name="review_leave" type="submit">Оставить отзыв</button>
                 </form>
+            {% else %}
+                <p>Чтобы оставить отзыв, убедитесь, что Вы авторизованы.</p>
+            {% endif %}
             </div>
         </div>
         <!-- Tab content -->

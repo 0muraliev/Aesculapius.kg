@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block container %}
-<h1 class="text-center user-select-none">Выход</h1>
 <p class="text-center">Вы уверены, что хотите выйти?</p>
 
 <form class="text-center" method="post" action="{% url 'account_logout' %}">{% csrf_token %}
