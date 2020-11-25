@@ -30,22 +30,16 @@
             {% for clinic in department_clinics %}
                 <div class="col-md-4 g-5">
                     <div class="department-wrap animate-box fadeInUp animated-fast">
-                        {% if clinic.image %}
-                            <a href="{{ clinic.get_absolute_url }}">
-                                <div class="grid-1 col-md-6"
-                                     style="background-image: url({{ clinic.image.url }});"></div>
-                            </a>
-                        {% else %}
-                            <a href="{{ clinic.get_absolute_url }}">
-                                <div class="grid-1 col-md-6"
-                                     style="background-image: url({% static 'images/default.jpg' %});"></div>
-                            </a>
-                        {% endif %}
+                        <a href="{{ clinic.get_absolute_url }}">
+                            <div class="grid-1 col-md-6" style="background-image:
+                                {% if clinic.image %}url({{ clinic.image.url }});">{% else %}url({% static 'images/default.jpg' %});">{% endif %}
+                            </div>
+                        </a>
                         <div class="grid-2 col-md-6">
                             <div class="desc">
                                 <p class="date">
-                                    <span><i class="fas fa-map-marker-alt"></i> {{ clinic.address }}</span>
-                                    <span><a href="#">4 <i class="icon-speech-bubble"></i></a></span>
+                                    <span><i class="fas fa-map-marker-alt"></i> {{ clinic.address }}</span><br>
+                                    <span><a href="#">{{ clinic.reviews.count }} <i class="icon-speech-bubble"></i></a></span>
                                 </p>
                                 <h2><a href="{{ clinic.get_absolute_url }}">{{ clinic.name }}</a></h2>
                                 <p>{{ clinic.information|linebreaks|truncatechars:220 }}</p>

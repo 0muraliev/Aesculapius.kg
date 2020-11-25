@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block container %}
-    <div class="col-md-5">
+    <div class="col-md-6">
         <h1 class="text-muted">Данные аккаунта</h1>
         {% include 'core/includes/messages.html' %}
         <div class="contact-info-wrap">
@@ -31,13 +31,12 @@
                 {% if user.profile.photo %}
                     <img src="{{ user.profile.photo.url }}" class="img-thumbnail">
                 {% endif %}
-                <li class="list-group-item">Полное имя - {{ user.get_full_name }}</li>
-                <li class="list-group-item">Имя пользователя - @{{ user.username }}</li>
+                <li class="list-group-item">Имя - {{ user.get_full_name }}</li>
+                <li class="list-group-item">Пользователь - {{ user.username }}</li>
                 <li class="list-group-item"><p><span><i class="icon-mail"></i></span> {{ user.email }}</p></li>
                 <li class="list-group-item"><p><span><i class="icon-phone"></i></span> <a href="tel://{{ user.profile.phone_number }}">{{ user.profile.phone_number }}</a></p></li>
             </ul>
         </div>
-        <br>
         {% if request.user.id == user.id %}
             <table class="table table-borderless caption-top">
                 <caption>Дополнительная информация</caption>
@@ -64,7 +63,7 @@
             </table>
         {% endif %}
     </div>
-    <div class="col-md-7 animate-box">
+    <div class="col-md-6 animate-box">
         <h1 class="text-muted">Записи на прием</h1>
         <p>Здесь будут отображены все Ваши заявки на прием.</p>
         <div class="fancy-collapse-panel">

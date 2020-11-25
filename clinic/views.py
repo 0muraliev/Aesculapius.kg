@@ -5,7 +5,6 @@ from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
-from communication.forms import LetterForm
 from communication.models import Appointment
 from user_account.decorators import clinic_required
 from user_account.forms import ClinicForm

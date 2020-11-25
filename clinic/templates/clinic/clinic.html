@@ -113,10 +113,10 @@
                 <p><img src="{% static 'images/default.jpg' %}" class="img-fluid hover-shadow rounded"></p>
             {% endif %}
 
-            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+            <div class="tab-pane fade show active contact-info-wrap" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                 <p>{{ clinic.information }}</p>
-                <p><span class="text-primary">Связаться с нами: </span>{{ clinic.contact }}</p>
-                <p><span class="text-primary">Место расположения: </span>{{ clinic.address }}</p>
+                <p><span><i class="icon-phone"></i> </span><a href="tel://{{ clinic.contact }}">{{ clinic.contact }}</a></p>
+                <p><span><i class="icon-location"></i> </span>{{ clinic.address }}</p>
                 <div id='map'></div>
             </div>
 

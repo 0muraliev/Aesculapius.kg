@@ -25,5 +25,6 @@ class ClinicForm(forms.ModelForm):
         model = Clinic
         fields = ('name', 'image', 'information', 'medical_departments', 'contact', 'address',)
         widgets = {
-            'contact': forms.TextInput(attrs={'placeholder': '+996 XXX XXXXXX'})
+            'contact': forms.TextInput(attrs={'placeholder': '+996 XXX XXXXXX'}),
+            'medical_departments': forms.SelectMultiple(attrs={'style': 'height: 250px;'}),
         }

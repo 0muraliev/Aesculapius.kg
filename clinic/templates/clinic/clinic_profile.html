@@ -2,6 +2,31 @@
 
 {% load bootstrap4 %}
 
+{% block head %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASlHwW6kgLT0NBbIsgDkE8JYBKrv5ghYI&callback=initMap&libraries=&v=weekly" defer></script>
+    <script>
+        let map;
+        let arr = "{{ clinic.location }}".split(',').map(Number);
+        const bangalore = {lat: arr[0], lng: arr[1]};
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: bangalore,
+                zoom: 14,
+            });
+            new google.maps.Marker({
+                position: bangalore,
+                map,
+            });
+        }
+    </script>
+    <style type="text/css">
+        #map {
+            height: 445px;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="row">
     <h1 class="text-center user-select-none">Персональные данные</h1>
@@ -25,48 +50,31 @@
 {% endblock %}
 
 {% block container %}
-    <div class="col-md-5">
+    <div class="col-md-6">
         <h1 class="text-muted">Данные клиники</h1>
         {% include 'core/includes/messages.html' %}
         <div class="contact-info-wrap">
             <ul class="list-group list-group-flush">
-                {% if user.profile.photo %}
-                    <img src="{{ user.profile.photo.url }}" class="img-thumbnail">
+                {% if clinic.image %}
+                    <img src="{{ clinic.image.url }}" class="img-thumbnail">
                 {% endif %}
                 <li class="list-group-item">Наименование - {{ clinic.name }}</li>
-                <li class="list-group-item">Имя учетной записи - @{{ clinic.user.username }}</li>
+                <li class="list-group-item">Учетная запись - {{ clinic.user.username }}</li>
                 <li class="list-group-item"><p><span><i class="icon-mail"></i> </span>{{ clinic.user.email }}</p></li>
                 <li class="list-group-item"><p><span><i class="icon-phone"></i> </span><a href="tel://{{ clinic.contact }}">{{ clinic.contact }}</a></p></li>
+                <li class="list-group-item"><p><span><i class="icon-location"></i> </span>{{ clinic.address }}</p></li>
             </ul>
+            {{ clinic.information }}
+            <div id="map"></div>
         </div>
-        <br>
-        {% if request.user.clinic == clinic.user.clinic %}
-            <table class="table table-borderless caption-top">
-                <caption>Дополнительная информация</caption>
-                <tr>
-                    <th scope="row">ИНН</th>
-                    <td>{{ user.profile.itn }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Пол</th>
-                    <td>{{ user.profile.get_gender_display }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Дата рождения</th>
-                    <td>{{ user.profile.birth_date }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Город</th>
-                    <td>{{ user.profile.get_city_display }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Группа крови</th>
-                    <td>{{ user.profile.blood_type }}</td>
-                </tr>
-            </table>
-        {% endif %}
+        <ul>
+        <h6 class="display-6">Медицинские отделения</h6>
+            {% for med in clinic.medical_departments.all %}
+                <li><a href="{{ med.get_absolute_url }}">{{ med }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
-    <div class="col-md-7 animate-box">
+    <div class="col-md-6 animate-box">
         <h1 class="text-muted">Записи на прием</h1>
         <p>Здесь будут отображены все Ваши заявки на прием.</p>
         <div class="fancy-collapse-panel">

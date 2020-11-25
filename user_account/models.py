@@ -43,7 +43,8 @@ class Clinic(models.Model):
                               null=True,
                               blank=True)
     address = models.CharField('Адрес', max_length=255)
-    location = PlainLocationField(based_fields=['address'], zoom=7, suffix='Bishkek')
+    location = PlainLocationField(based_fields=['address'], zoom=7, suffix='Bishkek',
+                                  default='42.858397010537054,434.56839323043823')
     contact = PhoneNumberField('Связаться с нами')
 
     def __str__(self):
