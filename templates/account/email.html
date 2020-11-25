@@ -7,7 +7,7 @@
         <h1 class="text-center user-select-none">Персональные данные</h1>
         <div class="col-1">
             <div class="nav flex-column nav-pills text-center">
-                {% if not request.user.is_clinic %}
+                {% if request.user.is_clinic %}
                     <a class="nav-link" href="{% url 'profile' request.user.profile.id %}">
                         Профиль
                     </a>
@@ -18,6 +18,16 @@
                         Сохранено
                     </a>
                     <a class="nav-link" href="{% url 'profile_update' %}">
+                        Настройки
+                    </a>
+                {% elif request.user.is_doctor %}
+                    <a class="nav-link" href="{% url 'doctor_profile' request.user.doctor.id %}">
+                        Профиль
+                    </a>
+                    <a class="nav-link active" href="{% url 'account_email' %}">
+                        Управление почтой
+                    </a>
+                    <a class="nav-link" href="{% url 'doctor_update' %}">
                         Настройки
                     </a>
                 {% else %}

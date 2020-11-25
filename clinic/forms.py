@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
-from user_account.models import User, Clinic
+from user_account.models import User
 from .models import Review
 
 

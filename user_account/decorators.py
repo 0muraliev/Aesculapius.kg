@@ -8,7 +8,7 @@ def profile_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, log
     при необходимости перенаправляет на Главную страницу.
     """
     actual_decorator = user_passes_test(
-        lambda u: u.is_active and not u.is_clinic,
+        lambda u: u.is_active and not u.is_clinic and not u.is_doctor,
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )
@@ -25,6 +25,21 @@ def clinic_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, logi
     """
     actual_decorator = user_passes_test(
         lambda u: u.is_active and u.is_clinic,
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+
+
+def doctor_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='home'):
+    """
+    Декоратор для представлений, который проверяет, что вошедший в систему пользователь имеет учетную запись доктора,
+    при необходимости перенаправляет на Главную страницу.
+    """
+    actual_decorator = user_passes_test(
+        lambda u: u.is_active and u.is_doctor,
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )

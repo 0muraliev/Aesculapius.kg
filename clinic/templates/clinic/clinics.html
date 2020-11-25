@@ -53,7 +53,7 @@
                             <div class="desc">
                                 <p class="date">
                                     <span title="Адрес клиники"><i class="icon-location"></i> {{ clinic.address }}</span><br>
-                                    <span class=""><i class="far fa-hospital"></i> {{ clinic.medical_departments.count }} отделов</span><br>
+                                    <span><i class="far fa-hospital"></i> {{ clinic.medical_departments.count }} отделов</span><br>
                                     <span title="Кол-во отзывов"><a href="{{ clinic.get_absolute_url }}"><i class="icon-speech-bubble"></i> {{ clinic.reviews.count }}</a></span>
                                 </p>
                                 <h2><a href="{{ clinic.get_absolute_url  }}">{{ clinic.name }}</a></h2>

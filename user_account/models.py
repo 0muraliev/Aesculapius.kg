@@ -11,6 +11,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class User(AbstractUser):
     is_clinic = models.BooleanField('clinic status', default=False)
+    is_doctor = models.BooleanField('doctor status', default=False)
 
 
 class MedicalDepartment(models.Model):
@@ -108,15 +109,32 @@ class Profile(models.Model):
         return 'Profile for user {}'.format(self.user.username)
 
 
+class Doctor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    photo = models.ImageField('Аватар', upload_to='doctors/%Y/%m/%d', blank=True)
+    specialization = models.ManyToManyField(MedicalDepartment, related_name='doctors', verbose_name='Специализация')
+    clinic = models.ForeignKey(Clinic, on_delete=models.SET_NULL,
+                               null=True, blank=True,
+                               related_name='doctors',
+                               verbose_name='Место работы')
+    biography = models.TextField('Биография', blank=True)
+
+
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     """
-    Определение сигналов, чтобы модель Profile/Clinic автоматически обновлялась при создании/изменении данных модели User.
+    Определение сигналов, чтобы модель Clinic/Doctor/Profile
+    автоматически обновлялась при создании/изменении данных модели User.
     """
     if instance.is_clinic:
         if created:
             Clinic.objects.create(user=instance, name=instance.username)
         instance.clinic.save()
+
+    elif instance.is_doctor:
+        if created:
+            Doctor.objects.create(user=instance)
+        instance.doctor.save()
 
     else:
         if created:

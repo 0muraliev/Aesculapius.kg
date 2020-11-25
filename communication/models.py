@@ -3,7 +3,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 from clinic.models import Clinic
-from user_account.models import Profile, User
+from user_account.models import Profile, User, Doctor
 
 
 class Message(models.Model):
@@ -21,6 +21,7 @@ class Message(models.Model):
 class Appointment(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='appointments')
     profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True, related_name='appointments')
+    doctor = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True, blank=True, related_name='appointments')
     clinic = models.ForeignKey(Clinic, on_delete=models.SET_NULL, null=True, blank=True, related_name='appointments')
     email = models.EmailField(User.get_email_field_name(), null=True, blank=True)
     phone_number = PhoneNumberField('Номер телефона', blank=True)

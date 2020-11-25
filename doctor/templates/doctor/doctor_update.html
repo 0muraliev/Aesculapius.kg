@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <h1 class="text-center user-select-none">Персональные данные</h1>
+        <div class="col-1">
+            <div class="nav flex-column nav-pills text-center">
+                <a class="nav-link" href="{% url 'doctor_profile' request.user.doctor.id %}">
+                    Профиль
+                </a>
+                <a class="nav-link" href="{% url 'account_email' %}">
+                    Управление почтой
+                </a>
+                <a class="nav-link active" href="{% url 'doctor_update' %}">
+                    Настройки
+                </a>
+            </div>
+        </div>
+        {% include 'core/includes/messages.html' %}
+        <br>
+{% endblock %}
+
+{% block container %}
+        <div class="row">
+            <div class="col-5">
+                <h1 class="text-muted">Настройки и доступ</h1>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="{% url 'socialaccount_connections' %}" class="text-primary">Подключения к социальным сетям</a></li>
+                    <li class="list-group-item"><a href="{% url 'account_change_password' %}" class="text-primary">Изменить пароль</a></li>
+                    <li class="list-group-item"><a href="{% url 'account_reset_password' %}" class="text-danger">Сбросить пароль</a></li>
+                    <li class="list-group-item"><a href="#" class="text-danger" data-toggle="modal" data-target="#exampleModal">Удалить аккаунт</a></li>
+                </ul>
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="exampleModalLabel">Удалить учетную запись</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+                            <div class="modal-body">
+                                Подтвердите действие, чтобы удалить свой аккаунт.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                <button formaction="{% url 'profile_inactive' %}" class="btn btn-warning">Подтвердить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+                    {% bootstrap_form user_form %}
+                    {% bootstrap_form doctor_form %}
+                    <button class="btn btn-primary" type="submit">Сохранить изменения</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

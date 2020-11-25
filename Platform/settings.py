@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'clinic',
     'user_account',
     'communication',
+    'doctor',
 
     'location_field.apps.DefaultConfig',
     'phonenumber_field',

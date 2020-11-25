@@ -45,6 +45,7 @@
                             <div class="desc">
                                 <p class="date">
                                     <span title="Адрес клиники"><i class="icon-location"></i> {{ fav.address }}</span><br>
+                                    <span class=""><i class="far fa-hospital"></i> {{ fav.medical_departments.count }} отделов</span><br>
                                     <span title="Кол-во отзывов"><a href="{{ fav.get_absolute_url }}">{{ fav.reviews.count }} <i class="icon-speech-bubble"></i></a></span>
                                 </p>
                                 <h2><a href="{{ fav.get_absolute_url  }}">{{ fav.name }}</a></h2>
