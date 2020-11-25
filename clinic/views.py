@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from communication.models import Appointment
 from user_account.decorators import clinic_required
 from user_account.forms import ClinicForm
-from user_account.models import MedicalDepartment, Clinic
+from user_account.models import MedicalDepartment, Clinic, Doctor
 from .forms import ReviewForm, ClinicSignupForm
 from .models import Review
 
@@ -82,19 +82,27 @@ def clinic(request, slug, id):
 
 
 def review_leave_or_change(request, clinic, reviews):
+    doctors = Doctor.objects.filter(clinic_id=clinic.id, user__is_active=True)
+    paginator = Paginator(doctors, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     if request.user.is_anonymous:
         context = {'clinic': clinic,
+                   'page_obj': page_obj,
                    'reviews': reviews}
     elif not reviews and not request.user.reviews.filter(clinic_id=clinic.id):
         context = {'clinic': clinic,
+                   'page_obj': page_obj,
                    'form_review': ReviewForm()}
     elif not request.user.reviews.filter(clinic_id=clinic.id):
         context = {'clinic': clinic,
+                   'page_obj': page_obj,
                    'reviews': reviews,
                    'review_user': request.user.reviews.filter(clinic_id=clinic.id),
                    'form_review': ReviewForm()}
     else:
         context = {'clinic': clinic,
+                   'page_obj': page_obj,
                    'reviews': reviews,
                    'review_user': request.user.reviews.filter(clinic_id=clinic.id),
                    'form_review': ReviewForm(),

@@ -75,12 +75,7 @@
                             <div class="menu-1">
                                 <ul>
                                     <li><a href="{% url 'home' %}">Главная</a></li>
-                                    <li class="has-dropdown">
-                                        <a href="doctors.html">Доктора</a>
-                                        <ul class="dropdown">
-                                            <li><a href="doctors-single.html">Single Doctor</a></li>
-                                        </ul>
-                                    </li>
+                                    <li><a href="{% url 'doctors' %}">Доктора</a></li>
                                     <li><a href="{% url 'clinics' %}">Клиники</a></li>
                                     <li><a href="{% url 'departments' %}">Отделения</a></li>
                                     <li><a href="{% url 'contact' %}">Связаться с нами</a></li>
@@ -124,7 +119,7 @@
                     <p>
                     <ul class="colorlib-footer-links">
                         <li><a href="{% url 'home' %}">Главная</a></li>
-                        <li><a href="#">Доктора</a></li>
+                        <li><a href="{% url 'doctors' %}">Доктора</a></li>
                         <li><a href="{% url 'clinics' %}">Клиники</a></li>
                         <li><a href="{% url 'departments' %}">Отделения</a></li>
                         <li><a href="{% url 'contact' %}">Контакты</a></li>

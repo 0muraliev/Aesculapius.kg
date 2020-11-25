@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db import transaction
+from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from communication.models import Appointment
@@ -8,6 +10,36 @@ from doctor.forms import DoctorForm, DoctorSignupForm
 from user_account.decorators import doctor_required
 from user_account.forms import UserForm
 from user_account.models import Doctor
+
+
+def doctors(request):
+    """Страница всех мед. специалистов"""
+    if 'key' in request.GET:
+        key = request.GET.get('key')
+        # SQLite не поддерживает поиск без учета регистра
+        doctors = Doctor.objects.filter(
+            Q(user__is_active=True),
+            Q(user__first_name__icontains=key) |
+            Q(user__last_name__icontains=key) |
+            Q(specialization__name__icontains=key)
+        ).distinct()
+    else:
+        doctors = Doctor.objects.filter(user__is_active=True)
+
+    """Пагинация страницы"""
+    paginator = Paginator(doctors, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'doctor/doctors.html', {'doctors': doctors,
+                                                   'page_obj': page_obj})
+
+
+def doctor(request, id):
+    """Все о клинике"""
+    doctor = Doctor.objects.get(id=id)
+    if not doctor.user.is_active:
+        return redirect('doctors')
+    return render(request, 'doctor/doctor.html', {'doctor': doctor})
 
 
 @login_required
