@@ -119,6 +119,9 @@ class Doctor(models.Model):
                                verbose_name='Место работы')
     biography = models.TextField('Биография', blank=True)
 
+    def __str__(self):
+        return self.user.username
+
 
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):

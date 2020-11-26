@@ -7,18 +7,27 @@
     <h1 class="text-center user-select-none">Персональные данные</h1>
     <div class="col-1">
         <div class="nav flex-column nav-pills text-center">
-            <a class="nav-link active" href="{% url 'clinic_profile' clinic.id %}">
+            {% if doctor %}
+            <a class="nav-link active" href="{% url 'doctor_profile' doctor.id %}">
                 Профиль
             </a>
             <a class="nav-link" href="{% url 'account_email' %}">
                 Управление почтой
             </a>
-            <a class="nav-link" href="#">
-                Специалисты
-            </a>
             <a class="nav-link" href="{% url 'clinic_update' %}">
                 Настройки
             </a>
+            {% elif clinic %}
+                <a class="nav-link active" href="{% url 'clinic_profile' clinic.id %}">
+                    Профиль
+                </a>
+                <a class="nav-link" href="{% url 'account_email' %}">
+                    Управление почтой
+                </a>
+                <a class="nav-link" href="{% url 'clinic_update' %}">
+                    Настройки
+                </a>
+            {% endif %}
         </div>
     </div>
     <br>

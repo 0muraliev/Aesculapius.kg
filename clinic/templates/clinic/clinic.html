@@ -72,7 +72,7 @@
                aria-controls="v-pills-messages" aria-selected="false">
                 Отзывы
             </a>
-            <a class="nav-link " href="{% url 'appointment' clinic.id %}">
+            <a class="nav-link " href="{% url 'appointment_clinic' clinic.id %}">
                 Запись<br>на прием
             </a>
             <form method="POST">{% csrf_token %}

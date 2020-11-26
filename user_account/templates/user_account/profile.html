@@ -31,8 +31,8 @@
                 {% if user.profile.photo %}
                     <img src="{{ user.profile.photo.url }}" class="img-thumbnail">
                 {% endif %}
-                <li class="list-group-item">Имя - {{ user.get_full_name }}</li>
                 <li class="list-group-item">Пользователь - {{ user.username }}</li>
+                <li class="list-group-item">Имя - {{ user.get_full_name }}</li>
                 <li class="list-group-item"><p><span><i class="icon-mail"></i></span> {{ user.email }}</p></li>
                 <li class="list-group-item"><p><span><i class="icon-phone"></i></span> <a href="tel://{{ user.profile.phone_number }}">{{ user.profile.phone_number }}</a></p></li>
             </ul>
@@ -73,7 +73,7 @@
                         <div class="panel-heading" role="tab">
                             <h4 class="panel-title">
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ appointment.id }}" aria-expanded="false">
-                                    Запись в {{ appointment.clinic }} {% if appointment.letter %}<i class="fas fa-check text-success"></i>{% endif %}
+                                    Запись {% if appointment.clinic %}в {{ appointment.clinic }}{% else %}к доктору {{ appointment.doctor.user.get_full_name }}{% endif %} {% if appointment.letter %}<i class="fas fa-check text-success"></i>{% endif %}
                                 </a>
                             </h4>
                         </div>

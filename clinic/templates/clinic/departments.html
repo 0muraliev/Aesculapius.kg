@@ -9,7 +9,7 @@
             <li class="text-success"><strong>{{ letter.grouper }}</strong>
                 <ul>
                     {% for department in letter.list %}
-                        <li class="list-unstyled"><a href="{{ department.get_absolute_url }}">{{ department.name }}</a></li>
+                        <li class="list-unstyled"><a href="{{ department.get_absolute_url }}">{{ department.name }} <small title="Кол-во клиник">({{ department.clinics.count }})</small></a></li>
                     {% endfor %}
                 </ul>
             </li>

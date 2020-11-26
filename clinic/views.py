@@ -39,8 +39,13 @@ def clinics(request):
 def clinic_profile(request, id):
     clinic_profile = Clinic.objects.get(id=id)
     appointments = Appointment.objects.filter(clinic_id=id)
+    doctors = Doctor.objects.filter(clinic_id=id, user__is_active=True)
+    paginator = Paginator(doctors, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, 'clinic/clinic_profile.html', {'clinic': clinic_profile,
-                                                          'appointments': appointments})
+                                                          'appointments': appointments,
+                                                          'page_obj': page_obj})
 
 
 @login_required

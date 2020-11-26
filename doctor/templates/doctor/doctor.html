@@ -2,6 +2,33 @@
 
 {% load static %}
 
+{% block head %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASlHwW6kgLT0NBbIsgDkE8JYBKrv5ghYI&callback=initMap&libraries=&v=weekly"
+            defer></script>
+    <style type="text/css">
+        #map {
+            height: 600px;
+            width: 500px;
+        }
+    </style>
+    <script>
+        let map;
+        let arr = "{{ doctor.clinic.location }}".split(',').map(Number);
+        const bangalore = {lat: arr[0], lng: arr[1]};
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: bangalore,
+                zoom: 14,
+            });
+            new google.maps.Marker({
+                position: bangalore,
+                map,
+            });
+        }
+    </script>
+{% endblock %}
+
 {% block content %}
     <aside id="colorlib-hero" class="breadcrumbs">
         <div class="flexslider">
@@ -23,14 +50,14 @@
         </div>
     </aside>
     <div class="row">
-    <div class="col-1">
+    <div class="col-md-1">
         <!-- Tab navs -->
         <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
                aria-controls="v-pills-home" aria-selected="true">
                 Главная
             </a>
-            <a class="nav-link " href="{% url 'appointment' doctor.id %}">
+            <a class="nav-link " href="{% url 'appointment_doctor' doctor.id %}">
                 Запись<br>на прием
             </a>
         </div>
@@ -39,7 +66,7 @@
 {% endblock %}
 
 {% block container %}
-    <div class="col-9">
+    <div class="col-md-6">
         {% include 'core/includes/messages.html' %}
         <!-- Tab content -->
         <div class="tab-content" id="v-pills-tabContent">
@@ -48,10 +75,8 @@
             {% else %}
                 <p><img src="{% static 'images/default.jpg' %}" class="img-fluid hover-shadow rounded"></p>
             {% endif %}
-
             <div class="tab-pane fade show active contact-info-wrap" id="v-pills-home" role="tabpanel"
                  aria-labelledby="v-pills-home-tab">
-                <p title="Место работы"><i class="far fa-hospital"></i> <a href="{{ doctor.clinic.get_absolute_url }}">{{ doctor.clinic }}</a></p>
                 <strong>Основная специализация</strong>
                 <ul>
                     {% for spec in doctor.specialization.all %}
@@ -62,10 +87,14 @@
                 </ul>
                 <br>
                 <strong>Биография</strong>
-                <p>{{ doctor.biography }}</p>
+                <p>{{ doctor.biography|linebreaks }}</p>
             </div>
         </div>
     </div>
+    <div class="col-md-6">
+                <strong>Место работы</strong><p title="Место работы"><i class="far fa-hospital"></i> <a href="{{ doctor.clinic.get_absolute_url }}" class="text-muted">{{ doctor.clinic }}</a></p>
+                <div id="map"></div>
+            </div>
     <!-- Tab content -->
     </div>
 {% endblock %}

@@ -6,7 +6,11 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASlHwW6kgLT0NBbIsgDkE8JYBKrv5ghYI&callback=initMap&libraries=&v=weekly" defer></script>
     <script>
         let map;
-        let arr = "{{ clinic.location }}".split(',').map(Number);
+        {% if clinic %}
+            let arr = "{{ clinic.location }}".split(',').map(Number);
+        {% else %}
+            let arr = "{{ doctor.clinic.location }}".split(',').map(Number);
+        {% endif %}
         const bangalore = {lat: arr[0], lng: arr[1]};
 
         function initMap() {
@@ -28,15 +32,27 @@
             <div class="row">
             {% include 'core/includes/messages.html' %}
 				<div class="col-md-12 animate-box">
-					<h1>Контактная информация <strong class="text-primary">{{ clinic.name }}</strong></h1>
-					<div class="row contact-info-wrap">
-						<div class="col-md-3">
-							<p><span><i class="icon-location"></i></span>{{ clinic.address }}</p>
-						</div>
-						<div class="col-md-2">
-							<p><span><i class="icon-phone"></i></span> <a href="tel://+996550050560">{{ clinic.contact }}</a></p>
-						</div>
-                    </div>
+                    {% if clinic %}
+                        <h1>Контактная информация <strong class="text-primary">{{ clinic.name }}</strong></h1>
+                        <div class="row contact-info-wrap">
+                            <div class="col-md-3">
+                                <p><span><i class="icon-location"></i></span>{{ clinic.address }}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p><span><i class="icon-phone"></i></span> <a href="tel://+996550050560">{{ clinic.contact }}</a></p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <h1>Контактная информация доктора <strong class="text-primary">{{ doctor.user.get_full_name }}</strong></h1>
+                        <div class="row contact-info-wrap">
+                            <div class="col-md-3">
+                                <p><span><i class="far fa-hospital"></i></span>{{ doctor.clinic }}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p><span><i class="icon-mail"></i></span>{{ doctor.user.email }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
 				<div class="col-md-12 animate-box">
 					<div class="row">
