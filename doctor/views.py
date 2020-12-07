@@ -12,8 +12,8 @@ from user_account.forms import UserForm
 from user_account.models import Doctor
 
 
-def doctors(request):
-    """Страница всех мед. специалистов"""
+def doctors_all(request):
+    """Страница всех мед. специалистов."""
     if 'key' in request.GET:
         key = request.GET.get('key')
         # SQLite не поддерживает поиск без учета регистра
@@ -35,7 +35,7 @@ def doctors(request):
 
 
 def doctor(request, id):
-    """Все о клинике"""
+    """Данные доктора."""
     doctor = Doctor.objects.get(id=id)
     if not doctor.user.is_active:
         return redirect('doctors')
@@ -45,6 +45,7 @@ def doctor(request, id):
 @login_required
 @doctor_required
 def doctor_profile(request, id):
+    """Профиль доктора."""
     doctor = Doctor.objects.get(id=id)
     appointments = Appointment.objects.filter(doctor_id=id)
     return render(request, 'doctor/doctor_profile.html', {'doctor': doctor,
@@ -54,6 +55,7 @@ def doctor_profile(request, id):
 @login_required
 @transaction.atomic
 def doctor_update(request):
+    """Редактирование профиля доктора."""
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         doctor_form = DoctorForm(data=request.POST, files=request.FILES, instance=request.user.doctor)
@@ -72,6 +74,7 @@ def doctor_update(request):
 
 
 def doctor_signup(request):
+    """Регистрация на сайт в роли доктора."""
     if request.method == 'POST':
         form = DoctorSignupForm(request.POST)
         if form.is_valid():

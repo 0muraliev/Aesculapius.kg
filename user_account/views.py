@@ -29,6 +29,7 @@ def profile(request, id):
 @login_required
 @transaction.atomic
 def profile_update(request):
+    """Редактирование профиля."""
     if request.method == 'POST':
         user_form = UserForm(data=request.POST, instance=request.user)
         profile_form = ProfileForm(data=request.POST, files=request.FILES, instance=request.user.profile)
@@ -48,6 +49,7 @@ def profile_update(request):
 
 @login_required
 def favorite_clinics(request):
+    """Избранные клиники."""
     context = {'favorite_clinics': Clinic.objects.filter(favorite_clinics=request.user.profile)}
     return render(request, 'user_account/favorite_clinics.html', context)
 
@@ -58,5 +60,7 @@ def profile_inactive(request):
     user = request.user
     user.is_active = False
     user.save()
-    messages.info(request, """Вы успешно удалили аккаунт. Чтобы восстановить его, обратитесь в службу поддержки""")
+    messages.info(
+        request,
+        """Вы успешно удалили аккаунт. Чтобы восстановить его, обратитесь в службу поддержки""")
     return redirect('home')

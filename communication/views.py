@@ -10,6 +10,7 @@ from .models import Appointment
 
 
 def contact(request):
+    """Контактные данные сайта."""
     if request.method == 'POST':
         form = MessageForm(data=request.POST, files=request.FILES)
         if form.is_valid():
@@ -31,6 +32,7 @@ def contact(request):
 
 @login_required
 def make_appointment_clinic(request, id):
+    """Отправка заявки на прием в клинику."""
     clinic = Clinic.objects.get(id=id)
     if request.method == 'POST':
         form = AppointmentForm(data=request.POST)
@@ -50,10 +52,15 @@ def make_appointment_clinic(request, id):
                     blood_type=profile.blood_type
                 )
                 appointment_form.save()
-                messages.success(request,
-                                 'Заявка отправлена. В течение 24 часов мы отправим Вам письмо в личный кабинет.')
+                messages.success(
+                    request,
+                    'Заявка отправлена. В течение 24 часов мы отправим Вам письмо в личный кабинет.'
+                )
             except Profile.DoesNotExist:
-                messages.info(request, 'Чтобы записаться на прием, авторизуйтесь через аккаунт профиля.')
+                messages.info(
+                    request,
+                    'Чтобы записаться на прием, авторизуйтесь через аккаунт профиля.'
+                )
         else:
             messages.info(request, 'Пожалуйста, проверьте правильность заполнения формы.')
 
@@ -64,6 +71,7 @@ def make_appointment_clinic(request, id):
 
 @login_required
 def make_appointment_doctor(request, id):
+    """Отправка заявки на прием к доктору."""
     doctor = Doctor.objects.get(id=id)
     if request.method == 'POST':
         form = AppointmentForm(data=request.POST)
@@ -82,10 +90,15 @@ def make_appointment_doctor(request, id):
                     blood_type=profile.blood_type
                 )
                 appointment_form.save()
-                messages.success(request,
-                                 'Заявка отправлена. В течение 24 часов мы отправим Вам письмо в личный кабинет.')
+                messages.success(
+                    request,
+                    'Заявка отправлена. В течение 24 часов мы отправим Вам письмо в личный кабинет.'
+                )
             except Profile.DoesNotExist:
-                messages.info(request, 'Чтобы записаться на прием, авторизуйтесь через аккаунт профиля.')
+                messages.info(
+                    request,
+                    'Чтобы записаться на прием, авторизуйтесь через аккаунт профиля.'
+                )
         else:
             messages.info(request, 'Пожалуйста, проверьте правильность заполнения формы.')
 
@@ -96,6 +109,7 @@ def make_appointment_doctor(request, id):
 
 @clinic_required
 def letter_clinic(request, id):
+    """Отправка сообщения клиенту от клиники."""
     clinic = Clinic.objects.get(user_id=request.user)
     appointment = Appointment.objects.get(id=id)
     if request.method == 'POST':
@@ -114,6 +128,7 @@ def letter_clinic(request, id):
 
 @doctor_required
 def letter_doctor(request, id):
+    """Отправка сообщения клиенту от доктора."""
     doctor = Doctor.objects.get(user_id=request.user)
     appointment = Appointment.objects.get(id=id)
     if request.method == 'POST':
