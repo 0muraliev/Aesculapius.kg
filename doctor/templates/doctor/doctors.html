@@ -46,15 +46,21 @@
                     <div class="department-wrap animate-box fadeInUp animated-fast">
                         <a href="{% url 'doctor' doctor.id %}">
                             <div class="grid-1 col-md-6" style="background-image:
-                                {% if doctor.photo %}url({{ doctor.photo.url }});">{% else %}url({% static 'images/default.jpg' %});">{% endif %}
+                                {% if doctor.photo %}url({{ doctor.photo.url }});">{% else %}url(
+                                {% static 'images/default.jpg' %});">{% endif %}
                             </div>
                         </a>
                         <div class="grid-2 col-md-6">
                             <div class="desc">
-                                <p class="date">
-                                    <span title="Место работы"><i class="far fa-hospital"></i> <a href="{{ doctor.clinic.get_absolute_url }}">{{ doctor.clinic }}</a></span><br>
-                                </p>
-                                <h2>Доктор <a href="{% url 'doctor' doctor.id %}">{{ doctor.user.get_full_name }}</a></h2>
+                                {% if doctor.clinic %}
+                                    <p class="date">
+                                        <span title="Место работы"><i class="far fa-hospital"></i> <a
+                                                href="{{ doctor.clinic.get_absolute_url }}">{{ doctor.clinic }}</a>
+                                        </span><br>
+                                    </p>
+                                {% endif %}
+                                <h2>Доктор <a href="{% url 'doctor' doctor.id %}">{{ doctor.user.get_full_name }}</a>
+                                </h2>
                                 <p>{{ doctor.biography|truncatechars:220 }}</p>
                             </div>
                         </div>

@@ -10,6 +10,9 @@
             height: 600px;
             width: 500px;
         }
+
+
+
     </style>
     <script>
         let map;
@@ -26,6 +29,9 @@
                 map,
             });
         }
+
+
+
     </script>
 {% endblock %}
 
@@ -91,10 +97,17 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-                <strong>Место работы</strong><p title="Место работы"><i class="far fa-hospital"></i> <a href="{{ doctor.clinic.get_absolute_url }}" class="text-muted">{{ doctor.clinic }}</a></p>
-                <div id="map"></div>
-            </div>
+    {% if doctor.clinic %}
+        <div class="col-md-6">
+            <strong>Место работы</strong>
+            <p title="Место работы"><i class="far fa-hospital"></i> <a href="{{ doctor.clinic.get_absolute_url }}"
+                                                                       class="text-muted">{{ doctor.clinic }}</a></p>
+            <div id="map"></div>
+        </div>
+    {% else %}
+        <br>
+        <h2><strong>Нет места работы</strong></h2>
+    {% endif %}
     <!-- Tab content -->
     </div>
 {% endblock %}

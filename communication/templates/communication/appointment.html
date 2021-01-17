@@ -3,7 +3,8 @@
 {% load bootstrap4 %}
 
 {% block head %}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASlHwW6kgLT0NBbIsgDkE8JYBKrv5ghYI&callback=initMap&libraries=&v=weekly" defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASlHwW6kgLT0NBbIsgDkE8JYBKrv5ghYI&callback=initMap&libraries=&v=weekly"
+            defer></script>
     <script>
         let map;
         {% if clinic %}
@@ -23,15 +24,17 @@
                 map,
             });
         }
+
+
     </script>
 {% endblock %}
 
 {% block container %}
-<div id="colorlib-contact">
+    <div id="colorlib-contact">
         <div class="container">
             <div class="row">
-            {% include 'core/includes/messages.html' %}
-				<div class="col-md-12 animate-box">
+                {% include 'core/includes/messages.html' %}
+                <div class="col-md-12 animate-box">
                     {% if clinic %}
                         <h1>Контактная информация <strong class="text-primary">{{ clinic.name }}</strong></h1>
                         <div class="row contact-info-wrap">
@@ -39,36 +42,42 @@
                                 <p><span><i class="icon-location"></i></span>{{ clinic.address }}</p>
                             </div>
                             <div class="col-md-2">
-                                <p><span><i class="icon-phone"></i></span> <a href="tel://+996550050560">{{ clinic.contact }}</a></p>
+                                <p><span><i class="icon-phone"></i></span> <a
+                                        href="tel://+996550050560">{{ clinic.contact }}</a></p>
                             </div>
                         </div>
                     {% else %}
-                        <h1>Контактная информация доктора <strong class="text-primary">{{ doctor.user.get_full_name }}</strong></h1>
+                        <h1>Контактная информация доктора <strong
+                                class="text-primary">{{ doctor.user.get_full_name }}</strong></h1>
                         <div class="row contact-info-wrap">
-                            <div class="col-md-3">
-                                <p><span><i class="far fa-hospital"></i></span>{{ doctor.clinic }}</p>
-                            </div>
+                            {% if doctor.clinic %}
+                                <div class="col-md-3">
+                                    <p><span><i class="far fa-hospital"></i></span>{{ doctor.clinic }}</p>
+                                </div>
+                            {% endif %}
                             <div class="col-md-2">
                                 <p><span><i class="icon-mail"></i></span>{{ doctor.user.email }}</p>
                             </div>
                         </div>
                     {% endif %}
                 </div>
-				<div class="col-md-12 animate-box">
-					<div class="row">
-						<div class="col-md-6">
+                <div class="col-md-12 animate-box">
+                    <div class="row">
+                        <div class="col-md-6">
                             <h2>Запись на прием</h2>
                             <form method="POST">{% csrf_token %}
                                 {% bootstrap_form appointment_form %}
                                 <button type="submit" class="btn btn-primary">Записаться</button>
                             </form>
-						</div>
-						<div class="col-md-6">
-							<div id="map"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                        </div>
+                        {% if doctor.clinic or clinic %}
+                            <div class="col-md-6">
+                                <div id="map"></div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
