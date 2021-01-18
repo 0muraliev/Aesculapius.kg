@@ -22,7 +22,9 @@ def contact(request):
                 messages.success(request, 'Сообщение отправлено.')
             except AttributeError:
                 messages.info(request, 'Чтобы отправить сообщение, пожалуйста, войдите в аккаунт.')
-
+            except ValueError:
+                messages.info(request, 'Чтобы оставить заявку, авторизуйтесь через аккаунт профиля.'
+                                       ' Или воспользуйтесь нашими контактными данными.')
             return redirect('contact')
         else:
             messages.error(request, 'Пожалуйста, исправьте ошибку ниже.')
